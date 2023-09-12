@@ -44,7 +44,7 @@ app.get("/api/shoes", shoe_route.get);
 app.post("/api/shoes", shoe_route.add);
 
 // routes
-app.get('/signup', signup_route.getSignupPage);
+app.get('/signup', signup_route);
 
 const PORT = process.env.PORT || 3014;
 

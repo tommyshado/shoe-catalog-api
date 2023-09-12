@@ -29,7 +29,6 @@ const db = pgp(connection);
 const shoe_service = shoeService(db);
 const shoe_api = shoeAPI(shoe_service);
 const shoe_route = shoeRoute(shoe_api);  
-const signup_route = signupRoute()
 
 app.engine("handlebars", engine({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
@@ -42,9 +41,6 @@ app.use(bodyParser.json());
 // Define the API endpoints
 app.get("/api/shoes", shoe_route.get);
 app.post("/api/shoes", shoe_route.add);
-
-// routes
-app.get('/signup', signup_route.getSignupPage);
 
 const PORT = process.env.PORT || 3014;
 

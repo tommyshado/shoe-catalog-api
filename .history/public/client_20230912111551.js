@@ -21,7 +21,9 @@ document.addEventListener('DOMContentLoaded', function () {
     function fetchShoes() {
         axios.get('/api/shoes')
     .then(function (response) {
-        let shoeList = response.data.data;  
+        console.log("API Response:", response.data);  // Debugging line
+        let shoeList = response.data.data;  // Make sure to access the 'data' field
+        console.log("Shoe List:", shoeList);  // Debugging line
         let generatedHTML = shoeListTemplateInstance({ shoeList: shoeList });
         shoesElem.innerHTML = generatedHTML;
     })
@@ -33,7 +35,7 @@ document.addEventListener('DOMContentLoaded', function () {
     fetchShoes();
 
 
-    document.querySelector("#signupButton").addEventListener("click", () => {
+    document.querySelector("#signup-button").addEventListener("click", () => {
         window.location.href = "/signup";
     });
     

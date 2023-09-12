@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', function () {
     fetchShoes();
 
 
-    document.querySelector("#signupButton").addEventListener("click", () => {
+    document.querySelector("#signup-button").addEventListener("click", () => {
         window.location.href = "/signup";
     });
     
