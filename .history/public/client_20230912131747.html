@@ -1,3 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Merriweather:ital@0;1&family=Simonetta:ital@0;1&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./style.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.11/handlebars.min.js"></script>
+    <title>Mintz Inc</title>
+  </head>
   <body>
     <script id="shoeListTemplate" type="text/x-handlebars-template">
       <ul>
@@ -29,13 +45,8 @@
 
       <div class="login_container">
         <div class="auth_container">
-          {{#if username}}
-            <span>Welcome, {{username}}</span>
-            <button id="logoutButton">Logout</button>
-          {{else}}
-            <button id="loginButton">Login</button>
-            <button id="signupButton">Signup</button>
-          {{/if}}
+          <button id="loginButton">Login</button>
+          <button id="signupButton">Signup</button>
         </div>
 
         <div class="cart_container">
@@ -47,20 +58,10 @@
 
     <div class="shoes"></div>
 
-          <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      const logoutButton = document.getElementById('logoutButton');
-      if (logoutButton) {
-        logoutButton.addEventListener('click', function () {
-          window.location.href = '/logout';
-        });
-      }
-    });
-  </script>
-
     <!-- Add your client-side JavaScript file here -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.11/handlebars.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
     <script src="client.js" type="module"></script>
-
   </body>
+</html>

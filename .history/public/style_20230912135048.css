@@ -82,16 +82,6 @@ header {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
 
-.flex_login_container {
-  display: flex;
-  align-items: center;
-  height: 100vh;
-}
-
-.login-container h2 {
-  text-align: center;
-}
-
 .form-group {
   margin-bottom: 20px;
 }
@@ -121,6 +111,9 @@ button {
  
 }
 
+.login-container button {
+
+}
 
 button:hover {
   background-color: #0056b3;

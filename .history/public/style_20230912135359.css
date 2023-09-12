@@ -85,7 +85,7 @@ header {
 .flex_login_container {
   display: flex;
   align-items: center;
-  height: 100vh;
+  height: 150vh;
 }
 
 .login-container h2 {

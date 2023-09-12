@@ -47,7 +47,6 @@ export default function userService(db) {
 
 
     return {
-        createUser,
-        validateUser
+        createUser
     };
 }

@@ -9,14 +9,11 @@ import path from 'path';
 // Import services, routes, and API
 import shoeService from "./services/shoeService.js"; 
 import userService from "./services/userService.js";
-import adminService from "./services/adminService.js";
 
 import shoeRoute from "./routes/shoeRoutes.js"; 
 import signupRoute from "./routes/signupRoute.js";
 import homeRoute from "./routes/homeRoute.js";
 import AuthRoute from "./routes/authRoute.js";
-import loginRoute from "./routes/loginRoute.js";
-import adminRoute from "./routes/adminRoutes.js";
 
 import shoeAPI from "./api/shoeAPI.js";  
 
@@ -56,7 +53,6 @@ const db = pgp(connection);
 // Initialize your service, API, and route
 const shoe_service = shoeService(db);
 const user_service = userService(db)
-const admin_service = adminService(db);
 
 const shoe_api = shoeAPI(shoe_service);
 
@@ -64,8 +60,7 @@ const shoe_route = shoeRoute(shoe_api);
 const signup_route = signupRoute(user_service)
 const home_route = homeRoute()
 const auth_route = AuthRoute()
-const login_route = loginRoute(user_service)
-const admin_route = adminRoute(admin_service);
+
 
 
 // Define the API endpoints
@@ -78,15 +73,8 @@ app.post('/signup', signup_route.postSignupPage);
 
 app.get('/home', home_route.get);
 
-
-// login and logout
 app.get('/logout', auth_route.logout);
-app.get('/login', login_route.getLoginPage);
-app.post('/login', login_route.postLoginPage);
 
-// admin route
-app.get('/admin', admin_route.getAdminLoginPage);
-app.post('/admin', admin_route.postAdminLoginPage);
 
 
 const PORT = process.env.PORT || 3014;

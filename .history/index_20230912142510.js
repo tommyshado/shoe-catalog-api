@@ -78,15 +78,12 @@ app.post('/signup', signup_route.postSignupPage);
 
 app.get('/home', home_route.get);
 
-
-// login and logout
 app.get('/logout', auth_route.logout);
 app.get('/login', login_route.getLoginPage);
+
+
 app.post('/login', login_route.postLoginPage);
 
-// admin route
-app.get('/admin', admin_route.getAdminLoginPage);
-app.post('/admin', admin_route.postAdminLoginPage);
 
 
 const PORT = process.env.PORT || 3014;

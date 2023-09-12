@@ -45,9 +45,4 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
 
-    document.querySelector("#loginButton").addEventListener("click", () => {
-        window.location.href = "/login";
-      });
-
-
 });
