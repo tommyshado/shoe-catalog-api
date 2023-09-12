@@ -119,8 +119,3 @@ button[type="submit"] {
 button[type="submit"]:hover {
   background-color: #0056b3;
 }
-
-.auth_container span,
-.auth_container button {
-  margin-right: 20px; /* Adjust the value as needed */
-}

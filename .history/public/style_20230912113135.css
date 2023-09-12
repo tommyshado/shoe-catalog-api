@@ -73,7 +73,6 @@ header {
 
 /* Give the container a more unique look */
 .signup-container {
-  margin: 0 auto;
   width: 450px;
   background-color: #fff;
   padding: 40px;
@@ -118,9 +117,4 @@ button[type="submit"] {
 /* Hover effect for the submit button */
 button[type="submit"]:hover {
   background-color: #0056b3;
-}
-
-.auth_container span,
-.auth_container button {
-  margin-right: 20px; /* Adjust the value as needed */
 }

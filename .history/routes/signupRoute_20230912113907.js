@@ -1,7 +1,7 @@
 
 
 
-export default function signupRoute(userService) {
+export default function signupRoute() {
     async function getSignupPage(req, res) {
         res.render('signup');
     }
@@ -9,9 +9,6 @@ export default function signupRoute(userService) {
     // POST route for form submission
     async function postSignupPage(req, res) {
         try {
-            console.log('Method:', req.method);
-            console.log('Path:', req.path);
-            console.log('Body:', req.body);
             // Get data from form submission
             const { username, email, password, confirmPassword } = req.body;
 
@@ -25,16 +22,14 @@ export default function signupRoute(userService) {
             }
 
             // Insert into database (via service function)
-             await userService.createUser({
+            const userId = await createUser({
                 username,
                 email,
                 password
             });
 
-            req.session.username = username;
-
-            // Redirect to the home page
-            res.redirect('/home');
+            // Redirect to a success page or dashboard
+            res.redirect(`/dashboard/${userId}`);
 
         } catch (error) {
             // Handle error (you'd also log this in a real app)

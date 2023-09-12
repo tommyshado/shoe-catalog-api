@@ -17,17 +17,6 @@ import shoeAPI from "./api/shoeAPI.js";
 
 const app = express();
 
-app.use(express.json()); 
-app.use(express.urlencoded({ extended: false }));
-app.use(express.static("public"));
-
-
-app.engine("handlebars", engine({ defaultLayout: "main" }));
-app.set("view engine", "handlebars");
-app.set("views", "./views");
-
-
-
 dotenv.config();
 
 const connection = {
@@ -56,7 +45,13 @@ const shoe_route = shoeRoute(shoe_api);
 const signup_route = signupRoute(user_service)
 const home_route = homeRoute()
 
+app.engine("handlebars", engine({ defaultLayout: "main" }));
+app.set("view engine", "handlebars");
+app.set("views", "./views");
+app.use(express.static("public"));
 
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 // Define the API endpoints
 app.get("/api/shoes", shoe_route.get);

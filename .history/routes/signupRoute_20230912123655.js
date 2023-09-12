@@ -9,9 +9,6 @@ export default function signupRoute(userService) {
     // POST route for form submission
     async function postSignupPage(req, res) {
         try {
-            console.log('Method:', req.method);
-            console.log('Path:', req.path);
-            console.log('Body:', req.body);
             // Get data from form submission
             const { username, email, password, confirmPassword } = req.body;
 
@@ -25,7 +22,7 @@ export default function signupRoute(userService) {
             }
 
             // Insert into database (via service function)
-             await userService.createUser({
+            const userId = await userService.createUser({
                 username,
                 email,
                 password
