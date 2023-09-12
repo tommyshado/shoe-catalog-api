@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Merriweather:ital@0;1&family=Simonetta:ital@0;1&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./style.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.11/handlebars.min.js"></script>
+    <title>Mintz Inc</title>
+  </head>
+  <body>
+    <script id="shoeListTemplate" type="text/x-handlebars-template">
+      <ul>
+        {{#each shoeList}}
+          <li>
+            <img src="{{image_url}}" alt="{{brand}} - {{color}}"> 
+            {{brand}} - {{color}} - Size: {{size}}
+          </li>
+        {{/each}}
+      </ul>
+    </script>
+    
+    
+
+    <header>
+      <div>
+        <input
+          class="search_bar"
+          type="text"
+          placeholder="🔍Search for shoes"
+        />
+      </div>
+
+      <div>
+        <img src="../images/logo.png" class="logo_img" alt="" />
+      </div>
+
+      <div class="login_container">
+        <button id="loginButton">Login</button>
+      </div>
+      
+
+      <div class="cart_container">
+        <img src="../images/shopping-cart.png" class="cart_img" alt="" />
+        <p>Cart</p>
+      </div>
+
+    </header>
+
+
+    <div class="shoes">
+
+    </div>
+
+    <!-- Add your client-side JavaScript file here -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <script src="client.js" type="module"></script>
+  </body>
+</html>

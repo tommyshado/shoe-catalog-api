@@ -1,0 +1,11 @@
+
+
+/* header */
+
+header {
+    display: flex;
+}
+
+.logo_img {
+    width: 200px;
+}

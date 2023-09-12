@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital@0;1&family=Simonetta:ital@0;1&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./css/style.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.11/handlebars.min.js"></script>
+    <title>Mintz Inc</title>
+
+    <script type="text/x-template" id="categoryTemplate">
+      <div class="filter_container">
+        <div class="flex_menu">
+          <div class="hamburger-menu">
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
+        </div>
+        <div>
+          <nav class="category_value">
+            <button class="reset_button">All Footwear</button>
+            <div class="select-container">
+              <div class="dropdown" id="color_dropdown">
+                <button class="dropdown-button">Color </button>
+                <button class="cancel_filter">❌</button>
+                <ul id="dropdown-content-placeholder" class="dropdown-content" data-parent="color_dropdown">
+                  {{#each colors}}
+                  <li class="color_option" data-color={{this}}>{{this}}</li>
+                  {{/each}}
+                </ul>
+
+              </div>
+            </div>
+              <div class="select-container">
+                <div class="dropdown" id="size_dropdown">
+                  <button class="dropdown-button">Size</button>
+                  <button class="cancel_filter">❌</button>
+                  <ul class="dropdown-content" data-parent="size_dropdown">
+                    {{#each sizes}}
+                    <li class="size_option" data-size={{this}}>{{this}}</li>
+                    {{/each}}
+                  </ul>
+                </div>
+              </div>
+              <div class="select-container">
+                <div class="dropdown" id="brand_dropdown">
+                  <button class="dropdown-button">Brand</button>
+                  <button class="cancel_filter">❌</button>
+                  <ul class="dropdown-content" data-parent="brand_dropdown">
+                    {{#each brands}}
+                    <li class="brand_option" data-brand={{this}}>{{this}}</li>
+                    {{/each}}
+                  </ul>
+                </div>
+              </div>
+              <div class="select-container">
+                <div class="dropdown" id="price_dropdown">
+                  <button class="dropdown-button">Price </button>
+                  <button class="cancel_filter">❌</button>
+                  <ul class="dropdown-content" data-parent="price_dropdown">
+                    {{#each prices}}
+                    <li class="price_option" data-price={{this}}>R{{this}}</li>
+                    {{/each}}
+                  </ul>
+                </div>
+              </div>
+          </nav>
+
+
+        </div>
+      </div>
+    </script>
+
+    <script type="text/x-template" id="shoeDisplayTemplate">
+      {{#each shoes}}
+      <div class="shoe_item">
+
+        <img src="{{this.img}}" />
+        <h4>{{this.name}}</h4>
+        <h4>R{{this.price}}</h4>
+        <h4 id="item_message">We have {{this.in_stock}} {{this.color}} pairs in stock</h4>
+        <div class="shoe_header">
+          <div id="cart-notification-{{this.id}}"style="display: none;">Item added to cart!</div>
+          <button class="add-to-cart-button" data-id="{{this.id}}">Add to Cart</button>
+        </div>
+      </div>
+      {{/each}}
+    </script>
+    <script type="text/x-handlebars-template" id="cart-template">
+      {{#each cartItems}}
+        <li class="cart-item">
+          <img src="{{this.img}}" alt="{{this.name}}" />
+          <div id="cart-item-info">
+            <div class="name-price">
+
+              <h4>{{this.name}}</h4>
+              <h4>R{{this.price}}.00</h4>
+            </div>
+            <span id="cart_size">Size: UK {{this.size}}</span>
+            <span id="cart_stock">{{this.in_stock}} in stock</span>
+
+            <div class="cart_count">
+              <span class="cart_count_dec" data-id="{{this.id}}">-</span>
+              <span class="cart_count_num" data-id="{{this.id}}">1</span>
+              <span class="cart_count_inc" data-id="{{this.id}}">+</span>
+            </div>
+
+          </div>
+        </li>
+      {{/each}}
+    </script>
+  </head>
+  <body>
+    <div class="overlay"></div>
+    <div id="confirmModal" class="modal">
+      <div class="modal-content">
+        <p>Are you sure you want to checkout?</p>
+        <button id="yesBtn">Yes</button>
+        <button id="noBtn">No</button>
+      </div>
+    </div>
+    <header>
+      <div class="search_flex">
+        <div class="search_container">
+          <div class="search_button_flex">
+            <button type="button" id="search_button" aria-label="search_button">
+              🔍
+            </button>
+            <input
+              id="search_bar"
+              type="text"
+              placeholder="  Search for shoes..."
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="title_container">
+        <img class="title reset-button-title" src="./images/logo.png" />
+      </div>
+      <div class="add_shoes_container">
+        <button class="support">
+          <img id="question" src="./images/question.png" />
+          <span>Support</span>
+        </button>
+        <button class="cart_container">
+          <img class="cart_img" src="./images/shopping-cart.png" />
+          <span class="cart_added_number" id="cart_icon_count"></span>
+          <span id="cart_word">Cart</span>
+        </button>
+        <div id="myModal" class="add_shoes_modal">
+          <!-- Modal content -->
+          <div id="shoeFormModal" class="shoe-form-tab visible">
+            <button class="shoe_cancel">
+              <img src="./images/cancel.png" />
+            </button>
+            <h2>👟 Add Your Shoes 👟</h2>
+            <div class="modal-content">
+              <form id="shoeForm">
+                <label for="shoeName">Shoe Name:</label><br />
+                <input
+                  type="text"
+                  id="shoeName"
+                  name="shoeName"
+                  placeholder="Shoe Name"
+                  required
+                /><br />
+                <label for="shoeColor">Color:</label><br />
+                <input
+                  type="text"
+                  id="shoeColor"
+                  name="shoeColor"
+                  placeholder="Color"
+                  required
+                /><br />
+
+                <label for="shoeBrand">Brand:</label><br />
+                <input
+                  type="text"
+                  id="shoeBrand"
+                  name="shoeBrand"
+                  placeholder="Brand"
+                  required
+                /><br />
+                <div class="number_input_container">
+                  <div>
+                    <label for="shoeSize">Size:</label><br />
+                    <input
+                      type="number"
+                      id="shoeSize"
+                      name="shoeSize"
+                      placeholder="Size"
+                      required
+                    /><br />
+                  </div>
+                  <div>
+                    <label for="shoePrice">Price:</label><br />
+                    <input
+                      type="number"
+                      id="shoePrice"
+                      name="shoePrice"
+                      placeholder="price"
+                      required
+                    /><br />
+                  </div>
+                </div>
+
+            
+                <label for="shoeImage">Image:</label><br />
+                <input
+                  type="text"
+                  id="shoeImage"
+                  name="shoeImage"
+                  placeholder="place image link here"
+                  required
+                /><br />
+                <div class="stock_container">
+                <label for="shoePrice">Stock:</label><br />
+                <input
+                  type="number"
+                  id="shoeStock"
+                  name="shoeStock"
+                  placeholder="stock"
+                  required
+                /><br />
+              </div>
+                <input type="submit" value="Submit" class="add_shoe_submit" />
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+    <div id="cart-tab">
+      <span class="cart-close"><img src="./images/cancel.png" /></span>
+
+      <div class="cart-content">
+        <h2>Shopping Cart (<span class="cart_added_number"></span>)</h2>
+        <div id="cart-list"></div>
+      </div>
+      <div class="extra-info">
+        <h2 class="sub_item">
+          <span>Subtotal:</span><span class="subtotal"></span>
+        </h2>
+        <button class="checkOut">Checkout</button>
+      </div>
+    </div>
+
+    <section class="category_display"></section>
+    <div id="dropdown-display-area"></div>
+    <section class="display_container"></section>
+
+    <script type="module" src="./js/shoe_catalog.js"></script>
+    <script type="module" src="./data/shoe_data.js"></script>
+  </body>
+</html>
