@@ -70,8 +70,7 @@ export default function shoeAPI(shoeService) {
       getByBrand,
       getBySize,
       getByColor,
-      getByPrice,
-      getFilters
+      getByPrice
     }
   }
   

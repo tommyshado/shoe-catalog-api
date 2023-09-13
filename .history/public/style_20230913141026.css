@@ -264,25 +264,5 @@ p {
   background-color: white;
   color: black;
   border: solid 1px black;
-  
-}
-
-.filter-box li{
   list-style: none;
-}
-
-.filter-button:hover {
-  background-color: rgb(245, 238, 230);
-}
-
-.filter-options {
-  display: none;
-}
-
-.filter-options.hidden {
-  display: none;
-}
-
-.filter-options:not(.hidden) {
-  display: block;
 }

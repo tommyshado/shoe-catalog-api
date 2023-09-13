@@ -78,8 +78,7 @@ export default function shoeRoute(shoe_api) {
         getByBrand,
         getBySize,
         getByColor,
-        getByPrice,
-        getFilters
+        getByPrice
     }
 }
 

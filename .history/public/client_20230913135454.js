@@ -3,7 +3,6 @@ async function fetchFilterData() {
         const response = await axios.get('/api/filters'); // API endpoint for fetching filter data
         const filterData = response.data;
 
-  
         let filterTemplate = document.querySelector('#filterTemplate');
         let filterTemplateInstance = Handlebars.compile(filterTemplate.innerHTML);
         let filterArea = document.getElementById('filterArea');
@@ -20,7 +19,7 @@ async function fetchFilterData() {
 }
 
 function toggleFilterOptions(element) {
-    const optionsList = element.nextElementSibling;
+    const optionsList = element.querySelector('.filter-options');
     if (optionsList) {
         optionsList.classList.toggle('hidden');
     }

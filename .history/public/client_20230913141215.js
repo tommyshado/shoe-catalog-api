@@ -20,7 +20,7 @@ async function fetchFilterData() {
 }
 
 function toggleFilterOptions(element) {
-    const optionsList = element.nextElementSibling;
+    const optionsList = element.querySelector('.filter-options');
     if (optionsList) {
         optionsList.classList.toggle('hidden');
     }

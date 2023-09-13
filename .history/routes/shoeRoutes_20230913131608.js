@@ -60,16 +60,6 @@ export default function shoeRoute(shoe_api) {
             res.status(500).json({ error: err.message });
         }
     }
-
-    async function getFilters(req, res) {
-        try {
-            // Use the API layer to fetch filter data
-            await shoe_api.getFilters(req, res);
-        } catch (err) {
-            res.status(500).json({ error: err.message });
-        }
-    }
-    
     
     return {
         get,
@@ -78,8 +68,7 @@ export default function shoeRoute(shoe_api) {
         getByBrand,
         getBySize,
         getByColor,
-        getByPrice,
-        getFilters
+        getByPrice
     }
 }
 

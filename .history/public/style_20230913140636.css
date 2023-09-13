@@ -251,38 +251,6 @@ p {
 
 .filter-box {
   border: solid 1px black;
-  margin: 1em 0.5em;
+  margin: 2em;
   padding: 0.1em 2em;
-  cursor: pointer;
-}
-
-.filter-box h3 {
-  margin: 10px 0;
-}
-
-.filter-button {
-  background-color: white;
-  color: black;
-  border: solid 1px black;
-  
-}
-
-.filter-box li{
-  list-style: none;
-}
-
-.filter-button:hover {
-  background-color: rgb(245, 238, 230);
-}
-
-.filter-options {
-  display: none;
-}
-
-.filter-options.hidden {
-  display: none;
-}
-
-.filter-options:not(.hidden) {
-  display: block;
 }

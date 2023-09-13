@@ -18,7 +18,7 @@ export default function shoeAPI(shoeService) {
       }
     }
   
-    
+    // New Methods
     async function getByBrand(req, res) {
       try {
         const shoes = await shoeService.getShoesByBrand(req.params.brand);
@@ -54,15 +54,6 @@ export default function shoeAPI(shoeService) {
         res.status(500).json({ error: err.message });
       }
     }
-
-    async function getFilters(req, res) {
-        try {
-          const filterData = await shoeService.getFilterData();
-          res.status(200).json(filterData);
-        } catch (err) {
-          res.status(500).json({ error: err.message });
-        }
-      }
   
     return {
       getAll,
@@ -70,8 +61,7 @@ export default function shoeAPI(shoeService) {
       getByBrand,
       getBySize,
       getByColor,
-      getByPrice,
-      getFilters
+      getByPrice
     }
   }
   

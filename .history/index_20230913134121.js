@@ -75,7 +75,6 @@ app.get("/api/shoes/brand/:brand", shoe_route.getByBrand);
 app.get("/api/shoes/size/:size", shoe_route.getBySize);
 app.get("/api/shoes/color/:color", shoe_route.getByColor);
 app.get("/api/shoes/price/:price", shoe_route.getByPrice);
-app.get("/api/filters", shoe_route.getFilters);
 
 // routes
 app.get('/signup', signup_route.getSignupPage);

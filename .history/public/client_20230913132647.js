@@ -1,40 +1,4 @@
-async function fetchFilterData() {
-    try {
-        const response = await axios.get('/api/filters'); // API endpoint for fetching filter data
-        const filterData = response.data;
 
-  
-        let filterTemplate = document.querySelector('#filterTemplate');
-        let filterTemplateInstance = Handlebars.compile(filterTemplate.innerHTML);
-        let filterArea = document.getElementById('filterArea');
-        
-        if (filterArea) {
-            let generatedHTML = filterTemplateInstance(filterData);
-            filterArea.innerHTML = generatedHTML;
-
-            attachFilterBoxEventListeners();
-        }
-    } catch (error) {
-        console.error('API Error:', error);
-    }
-}
-
-function toggleFilterOptions(element) {
-    const optionsList = element.nextElementSibling;
-    if (optionsList) {
-        optionsList.classList.toggle('hidden');
-    }
-}
-
-
-function attachFilterBoxEventListeners() {
-    const filterBoxes = document.querySelectorAll('.filter-box');
-    filterBoxes.forEach(box => {
-        box.addEventListener('click', function() {
-            toggleFilterOptions(this);
-        });
-    });
-}
 
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -65,8 +29,23 @@ document.addEventListener('DOMContentLoaded', function () {
         console.error('Handlebars template not found');
     }
 
-    
-    fetchFilterData();
+  
+    let filterTemplate = document.querySelector('#filterTemplate');
+    if (filterTemplate) {
+      let filterTemplateInstance = Handlebars.compile(filterTemplate.innerHTML);
+      let filterArea = document.getElementById('filterArea'); // Assuming you have a div with this id in your HTML
+      if (filterArea) {
+        // Fetch your filter options or use hardcoded data
+        const filterData = {
+          colors: ['Red', 'Blue', 'Green'],
+          sizes: [6, 7, 8, 9],
+          brands: ['Nike', 'Adidas', 'Puma'],
+          prices: [100, 200, 300]
+        };
+        let generatedHTML = filterTemplateInstance(filterData);
+        filterArea.innerHTML = generatedHTML;
+      }
+    }
 
 
     // Function to handle filter button clicks
@@ -90,7 +69,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
 
-
+    
 // signup
     const signupButton = document.querySelector("#signupButton");
     if (signupButton) {
@@ -114,6 +93,7 @@ document.addEventListener('DOMContentLoaded', function () {
             window.location.href = "/login";
         });
     }
+    //   shoe form
 
 
 });

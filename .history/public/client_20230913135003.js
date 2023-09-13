@@ -3,7 +3,6 @@ async function fetchFilterData() {
         const response = await axios.get('/api/filters'); // API endpoint for fetching filter data
         const filterData = response.data;
 
-  
         let filterTemplate = document.querySelector('#filterTemplate');
         let filterTemplateInstance = Handlebars.compile(filterTemplate.innerHTML);
         let filterArea = document.getElementById('filterArea');
@@ -11,30 +10,13 @@ async function fetchFilterData() {
         if (filterArea) {
             let generatedHTML = filterTemplateInstance(filterData);
             filterArea.innerHTML = generatedHTML;
-
-            attachFilterBoxEventListeners();
         }
     } catch (error) {
         console.error('API Error:', error);
     }
 }
 
-function toggleFilterOptions(element) {
-    const optionsList = element.nextElementSibling;
-    if (optionsList) {
-        optionsList.classList.toggle('hidden');
-    }
-}
 
-
-function attachFilterBoxEventListeners() {
-    const filterBoxes = document.querySelectorAll('.filter-box');
-    filterBoxes.forEach(box => {
-        box.addEventListener('click', function() {
-            toggleFilterOptions(this);
-        });
-    });
-}
 
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -65,9 +47,16 @@ document.addEventListener('DOMContentLoaded', function () {
         console.error('Handlebars template not found');
     }
 
-    
+    function toggleFilterOptions(element) {
+        const optionsList = element.querySelector('.filter-options');
+        if (optionsList) {
+            optionsList.classList.toggle('hidden');
+        }
+    }
+
     fetchFilterData();
 
+ 
 
     // Function to handle filter button clicks
   function handleFilterButtonClick(event) {
@@ -90,7 +79,15 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
 
+  const filterBoxes = document.querySelectorAll('.filter-box');
+  filterBoxes.forEach(box => {
+      box.addEventListener('click', function() {
+          toggleFilterOptions(this);
+      });
+  });
 
+
+    
 // signup
     const signupButton = document.querySelector("#signupButton");
     if (signupButton) {
@@ -114,6 +111,7 @@ document.addEventListener('DOMContentLoaded', function () {
             window.location.href = "/login";
         });
     }
+    //   shoe form
 
 
 });
