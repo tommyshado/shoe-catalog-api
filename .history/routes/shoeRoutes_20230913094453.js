@@ -18,21 +18,10 @@ export default function shoeRoute(shoe_api) {
             res.status(500).json({ error: err.message });
         }
     }
-
-
-    async function showShoeForm(req, res) {
-        try {
-            res.render('ShoeForm');
-        } catch (err) {
-            res.status(500).json({ error: err.message });
-        }
-    }
-    
     
     return {
         get,
-        add,
-        showShoeForm
+        add
     }
 }
 

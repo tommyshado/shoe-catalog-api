@@ -3,6 +3,7 @@ export default function loginRoute(userService) {
     async function getLoginPage(req, res) {
       res.render('login');
     }
+  
     async function postLoginPage(req, res) {
       try {
         const { username, password } = req.body;
@@ -13,7 +14,7 @@ export default function loginRoute(userService) {
           req.session.username = username;
     
           if (validatedAccount.accountType === 'admin') {
-            res.redirect('/shoeForm');  // Redirecting to ShoeForm.handlebars
+            res.redirect('/admin/dashboard');
           } else {
             res.redirect('/home');
           }
@@ -25,7 +26,6 @@ export default function loginRoute(userService) {
         res.status(400).send(error.message);
       }
     }
-    
     
   
     return {

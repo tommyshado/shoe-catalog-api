@@ -19,18 +19,6 @@ export default function userService(db) {
         }
     }
 
-    async function createAdmin({ username, password }) {
-        const saltRounds = 10;
-        const hashedPassword = await bcrypt.hash(password, saltRounds);
-    
-        const result = await db.one(`
-          INSERT INTO admins(username, password)
-          VALUES($1, $2)
-          RETURNING id`, [username, hashedPassword]
-        );
-        return result.id;
-      }
-
 
     async function validateUserOrAdmin({ username, password }) {
         try {
@@ -56,7 +44,6 @@ export default function userService(db) {
 
     return {
         createUser,
-        validateUserOrAdmin,
-        createAdmin
+        validateUser
     };
 }

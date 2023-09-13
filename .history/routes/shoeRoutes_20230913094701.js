@@ -31,8 +31,7 @@ export default function shoeRoute(shoe_api) {
     
     return {
         get,
-        add,
-        showShoeForm
+        add
     }
 }
 

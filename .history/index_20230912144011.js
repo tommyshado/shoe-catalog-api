@@ -85,8 +85,6 @@ app.get('/login', login_route.getLoginPage);
 app.post('/login', login_route.postLoginPage);
 
 // admin route
-app.get('/shoeForm', shoe_route.showShoeForm);
-
 
 const PORT = process.env.PORT || 3014;
 

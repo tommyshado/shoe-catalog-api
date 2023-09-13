@@ -9,14 +9,14 @@ import path from 'path';
 // Import services, routes, and API
 import shoeService from "./services/shoeService.js"; 
 import userService from "./services/userService.js";
-
+import adminService from "./services/adminService.js";
 
 import shoeRoute from "./routes/shoeRoutes.js"; 
 import signupRoute from "./routes/signupRoute.js";
 import homeRoute from "./routes/homeRoute.js";
 import AuthRoute from "./routes/authRoute.js";
 import loginRoute from "./routes/loginRoute.js";
-
+import adminRoute from "./routes/adminRoute.js";
 
 import shoeAPI from "./api/shoeAPI.js";  
 
@@ -85,8 +85,6 @@ app.get('/login', login_route.getLoginPage);
 app.post('/login', login_route.postLoginPage);
 
 // admin route
-app.get('/shoeForm', shoe_route.showShoeForm);
-
 
 const PORT = process.env.PORT || 3014;
 

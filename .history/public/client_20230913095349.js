@@ -49,7 +49,6 @@ document.addEventListener('DOMContentLoaded', function () {
         window.location.href = "/login";
       });
 
-    //   shoe form
 
       const form = document.getElementById('addShoeForm');
   
