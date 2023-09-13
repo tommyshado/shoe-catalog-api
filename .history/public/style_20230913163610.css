@@ -240,11 +240,9 @@ p {
 .hidden {
   display: none;
 }
-
-
 #filterArea {
   display: flex;
-  margin: 1em auto 3em auto;
+  margin: 2em auto;
   max-width: 800px;
   justify-content: space-around;
 }
@@ -252,13 +250,13 @@ p {
 .filter-box {
   border: solid 1px black;
   margin: 1em 0.5em;
-  padding: 0.1em 2em;
+  padding: 0;
   cursor: pointer;
-  
+  box-sizing: border-box;
 }
 
 .filter-box h3 {
-  margin: 10px 0;
+  margin: 1em 0;
 }
 
 .filter-button {
@@ -271,10 +269,10 @@ p {
   font-size: 1.1rem;
 }
 
-
-.filter-box li{
+.filter-box li {
   list-style: none;
-
+  margin: 0;
+  padding: 0;
 }
 
 .filter-button:hover {
@@ -282,7 +280,11 @@ p {
 }
 
 .filter-options {
-  display: none
+  display: none;
+  width: 100%;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
 }
 
 .filter-options.hidden {
@@ -291,17 +293,18 @@ p {
 
 .filter-options:not(.hidden) {
   display: flex;
-  margin-right: 4em;
-
+  justify-content: center;
 }
 
+.filter-box {
+  text-align: center;
+}
 
 .show-outside {
   display: flex;
   justify-content: center;
   position: absolute;
-
   z-index: 999;
-  margin-top: 2em;
-  margin-left: -12em;
 }
+
+

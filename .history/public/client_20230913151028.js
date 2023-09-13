@@ -18,33 +18,27 @@ async function fetchFilterData() {
         console.error('API Error:', error);
     }
 }
-function toggleFilterOptions1(element) {
+function toggleFilterOptions(element) {
     const optionsList = element.querySelector('.filter-options');
     if (optionsList) {
         optionsList.classList.toggle('hidden');
         
+        // Move the optionsList to outside of the filter-box
         if (!optionsList.classList.contains('hidden')) {
             document.body.appendChild(optionsList);
         } else {
+            // Move it back inside when hidden
             element.appendChild(optionsList);
         }
     }
 }
 
-// JavaScript to change position via CSS
-function toggleFilterOptions2(element) {
-    const optionsList = element.querySelector('.filter-options');
-    if (optionsList) {
-        optionsList.classList.toggle('hidden');
-        optionsList.classList.toggle('show-outside');
-    }
-}
 
 function attachFilterBoxEventListeners() {
-    const filterBoxes = document.querySelectorAll('.filter-box h3');
+    const filterBoxes = document.querySelectorAll('.filter-box h3'); // Target h3 within .filter-box
     filterBoxes.forEach(box => {
         box.addEventListener('click', function() {
-            toggleFilterOptions2(this.parentElement); // Change this to toggleFilterOptions1 for the other method
+            toggleFilterOptions(this.parentElement); // pass the parent .filter-box
         });
     });
 }

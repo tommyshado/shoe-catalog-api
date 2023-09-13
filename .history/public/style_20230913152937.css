@@ -244,7 +244,7 @@ p {
 
 #filterArea {
   display: flex;
-  margin: 1em auto 3em auto;
+  margin: 2em auto;
   max-width: 800px;
   justify-content: space-around;
 }
@@ -254,7 +254,6 @@ p {
   margin: 1em 0.5em;
   padding: 0.1em 2em;
   cursor: pointer;
-  
 }
 
 .filter-box h3 {
@@ -266,9 +265,6 @@ p {
   color: black;
   border: solid 1px black;
   border-radius: 0;
-  margin-right: 0.5em;
-  padding: 1.5em 2em;
-  font-size: 1.1rem;
 }
 
 
@@ -282,7 +278,7 @@ p {
 }
 
 .filter-options {
-  display: none
+  display: flex;
 }
 
 .filter-options.hidden {
@@ -291,17 +287,14 @@ p {
 
 .filter-options:not(.hidden) {
   display: flex;
-  margin-right: 4em;
-
+  justify-content: space-around;
 }
 
 
 .show-outside {
   display: flex;
-  justify-content: center;
   position: absolute;
-
+  top: 50;
+  left: 50;
   z-index: 999;
-  margin-top: 2em;
-  margin-left: -12em;
 }

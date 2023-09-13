@@ -244,7 +244,7 @@ p {
 
 #filterArea {
   display: flex;
-  margin: 1em auto 3em auto;
+  margin: 1em auto;
   max-width: 800px;
   justify-content: space-around;
 }
