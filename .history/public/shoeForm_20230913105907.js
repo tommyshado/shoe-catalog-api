@@ -28,7 +28,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (response.ok) {
                     alert('Shoe added successfully!');
                     form.reset();
-                    window.location.href = '/';
                 } else {
                     const data = await response.json();
                     alert('Error: ' + data.error);

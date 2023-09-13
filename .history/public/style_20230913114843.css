@@ -229,8 +229,3 @@ p {
   font-size: 1.2rem;
   font-weight: bold;
 }
-
-
-.add_shoe_button:hover {
-  background-color: rgb(233, 177, 75);
-}

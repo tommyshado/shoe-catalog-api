@@ -16,17 +16,15 @@
   </head>
   <body>
     <script id="shoeListTemplate" type="text/x-handlebars-template">
-     <div class="shoe_content_container" >
+     <div>
         {{#each shoeList}}
-        <div class="shoe_item_container">
-          <div id="shoe_image_container">
-            <img src="{{image_url}}" alt="{{brand}} - {{color}}" width="120px" />
+          <div>
+            <img src="{{image_url}}" alt="{{brand}} - {{color}}" width="50px" />
           </div>
           <h3> {{name}}</h3> 
-           <h3>R{{price}}</h3>
-          <p>We have {{in_stock}} {{color}} pairs in stock</p>  
-          <button class="add_shoe_button">Add Shoe</button>
-        </div>
+           <h3>{{price}}</h3>
+          <p>We have {{in_stock}}</p>  
+          
         {{/each}}
       </div>
     </script>

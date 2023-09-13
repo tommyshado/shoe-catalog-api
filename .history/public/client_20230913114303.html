@@ -20,11 +20,11 @@
         {{#each shoeList}}
         <div class="shoe_item_container">
           <div id="shoe_image_container">
-            <img src="{{image_url}}" alt="{{brand}} - {{color}}" width="120px" />
+            <img src="{{image_url}}" alt="{{brand}} - {{color}}" width="100px" />
           </div>
           <h3> {{name}}</h3> 
-           <h3>R{{price}}</h3>
-          <p>We have {{in_stock}} {{color}} pairs in stock</p>  
+           <h3>{{price}}</h3>
+          <p>We have {{in_stock}} {{color}} in stock</p>  
           <button class="add_shoe_button">Add Shoe</button>
         </div>
         {{/each}}

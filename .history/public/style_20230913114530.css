@@ -202,7 +202,7 @@ input {
   flex: 0 0 calc(20% - 10px); /* Each box will take up approximately 20% of the container width, minus a little for margin */
   margin: 5px; /* Small margin around each box */
   box-sizing: border-box; /* Include border and padding in box's total width and height */
-  
+
   padding: 10px; /* Some space between box content and the border */
   text-align: center; /* Center the text horizontally */
 }
@@ -220,7 +220,7 @@ h3 {
 p {
   margin: 5px 0; /* Add some vertical spacing around the p elements */
   color: rgb(108, 107, 107);
-  font-size: 1.4rem;
+  font-size: 1.2rem;
 }
 
 .add_shoe_button {
@@ -228,9 +228,4 @@ p {
   margin-top: 20px;
   font-size: 1.2rem;
   font-weight: bold;
-}
-
-
-.add_shoe_button:hover {
-  background-color: rgb(233, 177, 75);
 }
