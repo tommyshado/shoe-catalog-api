@@ -12,7 +12,17 @@ async function fetchFilterData() {
             let generatedHTML = filterTemplateInstance(filterData);
             filterArea.innerHTML = generatedHTML;
 
-            attachFilterBoxEventListeners();
+            allowSingleFilterSelection();
+
+            // Debugging: Directly add click event to filter buttons
+            let filterButtons = document.querySelectorAll('.filter-button');
+            
+
+            filterButtons.forEach(button => {
+                button.addEventListener('click', function() {
+            
+                });
+            });
         }
     } catch (error) {
         console.error('API Error:', error);
@@ -40,18 +50,20 @@ function toggleFilterOptions2(element) {
     }
 }
 
-function attachFilterBoxEventListeners() {
-    const filterBoxes = document.querySelectorAll('.filter-box h3');
-    filterBoxes.forEach(box => {
-        box.addEventListener('click', function() {
-            // Hide all other filter options first
-            document.querySelectorAll('.filter-options').forEach(el => {
-                el.classList.add('hidden');
-                el.classList.remove('show-outside');
-            });
+function attachFilterButtonListeners() {
+    const filterButtons = document.querySelectorAll('.filter-button');
+    console.log("Direct event listeners attached to", filterButtons.length, "filter buttons");
 
-            // Then toggle the clicked filter options
-            toggleFilterOptions2(this.parentElement); // Change this to toggleFilterOptions1 for the other method
+    filterButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            console.log("Filter button directly clicked: ", this);
+
+            // Hide all other filter options and remove their 'selected' class
+            document.querySelectorAll('.filter-options').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.filter-button').forEach(btn => btn.classList.remove('selected'));
+
+            // Your other logic to display filter options and set 'selected' class
+            this.classList.add('selected');
         });
     });
 }
@@ -60,7 +72,7 @@ function attachFilterBoxEventListeners() {
 
 document.addEventListener('DOMContentLoaded', function () {
 
-    console.log("DOMContentLoaded event fired");  // Debugging line
+
 
     // Compile Handlebars template
     let shoeListTemplate = document.querySelector('#shoeListTemplate');
@@ -88,7 +100,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     
     fetchFilterData();
-
 
     // Function to handle filter button clicks
   function handleFilterButtonClick(event) {
@@ -137,4 +148,42 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
 
+
+
 });
+
+function allowSingleFilterSelection() {
+    let filterBoxes = document.querySelectorAll('.filter-box');
+    
+    console.log("Event listeners attached to", filterBoxes.length, "filter boxes");
+  
+    filterBoxes.forEach(box => {
+      box.addEventListener('click', function(event) {
+        console.log("Filter box clicked. Target:", event.target);
+
+        // Hide all other filter options and remove their 'selected' class
+        document.querySelectorAll('.filter-options').forEach(el => el.classList.add('hidden'));
+        document.querySelectorAll('.filter-button').forEach(btn => btn.classList.remove('selected'));
+
+        // Find the closest filter-box to the clicked element
+        const closestFilterBox = event.target.closest('.filter-box');
+        
+        if (event.target.classList.contains('filter-button')) {
+          console.log("Filter button clicked:", event.target);
+          
+          // Show the filter options related to the clicked button
+          const optionsList = closestFilterBox.querySelector('.filter-options');
+          optionsList.classList.remove('hidden');
+          optionsList.classList.add('show-outside');
+
+          // Add the 'selected' class to the clicked button
+          event.target.classList.add('selected');
+        } else {
+          console.log("The clicked element is not a filter-button.");
+        }
+      });
+    });
+}
+
+
+  

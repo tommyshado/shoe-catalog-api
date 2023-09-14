@@ -12,7 +12,8 @@ async function fetchFilterData() {
             let generatedHTML = filterTemplateInstance(filterData);
             filterArea.innerHTML = generatedHTML;
 
-            attachFilterBoxEventListeners();
+            allowSingleFilterSelection();
+   
         }
     } catch (error) {
         console.error('API Error:', error);
@@ -44,18 +45,10 @@ function attachFilterBoxEventListeners() {
     const filterBoxes = document.querySelectorAll('.filter-box h3');
     filterBoxes.forEach(box => {
         box.addEventListener('click', function() {
-            // Hide all other filter options first
-            document.querySelectorAll('.filter-options').forEach(el => {
-                el.classList.add('hidden');
-                el.classList.remove('show-outside');
-            });
-
-            // Then toggle the clicked filter options
             toggleFilterOptions2(this.parentElement); // Change this to toggleFilterOptions1 for the other method
         });
     });
 }
-
 
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -138,3 +131,30 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 });
+
+function allowSingleFilterSelection() {
+    let filterBoxes = document.querySelectorAll('.filter-box');
+    
+    filterBoxes.forEach(box => {
+      box.addEventListener('click', function(event) {
+        // Hide all other filter options and remove their 'selected' class
+        document.querySelectorAll('.filter-options').forEach(el => el.classList.add('hidden'));
+        document.querySelectorAll('.filter-button').forEach(btn => btn.classList.remove('selected'));
+  
+        // If the clicked element is a filter-button, proceed
+        if (event.target.classList.contains('filter-button')) {
+          // Stop propagation to ensure the click event doesn't bubble up
+          event.stopPropagation();
+  
+          // Show the filter options related to the clicked button
+          const optionsList = box.querySelector('.filter-options');
+          optionsList.classList.remove('hidden');
+          optionsList.classList.add('show-outside');
+  
+          // Add the 'selected' class to the clicked button
+          event.target.classList.add('selected');
+        }
+      });
+    });
+  }
+  

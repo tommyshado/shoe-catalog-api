@@ -44,18 +44,10 @@ function attachFilterBoxEventListeners() {
     const filterBoxes = document.querySelectorAll('.filter-box h3');
     filterBoxes.forEach(box => {
         box.addEventListener('click', function() {
-            // Hide all other filter options first
-            document.querySelectorAll('.filter-options').forEach(el => {
-                el.classList.add('hidden');
-                el.classList.remove('show-outside');
-            });
-
-            // Then toggle the clicked filter options
             toggleFilterOptions2(this.parentElement); // Change this to toggleFilterOptions1 for the other method
         });
     });
 }
-
 
 
 document.addEventListener('DOMContentLoaded', function () {

@@ -12,6 +12,7 @@ async function fetchFilterData() {
             let generatedHTML = filterTemplateInstance(filterData);
             filterArea.innerHTML = generatedHTML;
 
+            allowSingleFilterSelection();
             attachFilterBoxEventListeners();
         }
     } catch (error) {
@@ -44,18 +45,10 @@ function attachFilterBoxEventListeners() {
     const filterBoxes = document.querySelectorAll('.filter-box h3');
     filterBoxes.forEach(box => {
         box.addEventListener('click', function() {
-            // Hide all other filter options first
-            document.querySelectorAll('.filter-options').forEach(el => {
-                el.classList.add('hidden');
-                el.classList.remove('show-outside');
-            });
-
-            // Then toggle the clicked filter options
             toggleFilterOptions2(this.parentElement); // Change this to toggleFilterOptions1 for the other method
         });
     });
 }
-
 
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -138,3 +131,31 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 });
+
+// Function to allow only one filter box to be selected at a time
+function allowSingleFilterSelection() {
+  let filterButtons = document.querySelectorAll('.filter-button');
+  
+  filterButtons.forEach(button => {
+    button.addEventListener('click', function() {
+      // Hide all other filter options
+      document.querySelectorAll('.filter-options').forEach(el => el.classList.add('hidden'));
+
+      // Unselect all other filter buttons
+      filterButtons.forEach(otherButton => {
+        if (otherButton !== this) {
+          otherButton.classList.remove('selected');
+        }
+      });
+
+      // Toggle the selected state of the clicked button
+      this.classList.toggle('selected');
+
+      // Show the filter options related to the clicked button
+      const parent = this.closest('.filter-box');
+      const optionsList = parent.querySelector('.filter-options');
+      optionsList.classList.toggle('hidden');
+      optionsList.classList.add('show-outside'); // This should make it appear in the center
+    });
+  });
+}

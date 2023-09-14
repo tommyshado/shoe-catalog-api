@@ -12,6 +12,7 @@ async function fetchFilterData() {
             let generatedHTML = filterTemplateInstance(filterData);
             filterArea.innerHTML = generatedHTML;
 
+            allowSingleFilterSelection();
             attachFilterBoxEventListeners();
         }
     } catch (error) {
@@ -44,18 +45,10 @@ function attachFilterBoxEventListeners() {
     const filterBoxes = document.querySelectorAll('.filter-box h3');
     filterBoxes.forEach(box => {
         box.addEventListener('click', function() {
-            // Hide all other filter options first
-            document.querySelectorAll('.filter-options').forEach(el => {
-                el.classList.add('hidden');
-                el.classList.remove('show-outside');
-            });
-
-            // Then toggle the clicked filter options
             toggleFilterOptions2(this.parentElement); // Change this to toggleFilterOptions1 for the other method
         });
     });
 }
-
 
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -138,3 +131,24 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 });
+
+function allowSingleFilterSelection() {
+    let filterBoxes = document.querySelectorAll('.filter-box');
+
+    filterBoxes.forEach(box => {
+        // Listen for clicks on the filter box
+        box.addEventListener('click', function(event) {
+            // Hide all other filter options and remove their 'selected' class
+            document.querySelectorAll('.filter-options').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.filter-button').forEach(btn => btn.classList.remove('selected'));
+
+            // If the clicked element inside the box is a filter-button, handle it
+            if (event.target.classList.contains('filter-button')) {
+                event.target.classList.add('selected');
+                const optionsList = box.querySelector('.filter-options');
+                optionsList.classList.remove('hidden');
+                optionsList.classList.add('show-outside');
+            }
+        });
+    });
+}
