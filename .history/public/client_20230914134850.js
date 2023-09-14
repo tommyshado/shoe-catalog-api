@@ -56,8 +56,7 @@ function attachFilterBoxEventListeners() {
     });
 }
 
-let shoeListTemplateInstance; 
-let shoesElem;
+
 
 document.addEventListener('DOMContentLoaded', function () {
 
@@ -66,8 +65,8 @@ document.addEventListener('DOMContentLoaded', function () {
     let shoeListTemplate = document.querySelector('#shoeListTemplate');
     if (shoeListTemplate) {
         // Continue with existing logic
-         shoeListTemplateInstance = Handlebars.compile(shoeListTemplate.innerHTML);
-        shoesElem = document.querySelector('.shoes');
+        let shoeListTemplateInstance = Handlebars.compile(shoeListTemplate.innerHTML);
+        let shoesElem = document.querySelector('.shoes');
         if (shoesElem) {
             function fetchShoes() {
                 axios.get('/api/shoes')
@@ -91,36 +90,26 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
     let currentFilters = {};
-
- // Function to handle filter button clicks
-// Function to handle filter button clicks
-function handleFilterButtonClick(event) {
-    const filterType = event.target.getAttribute('data-filter');
-    const filterValue = event.target.getAttribute('data-value');
-    
-    if (filterType && filterValue) {
-        // Toggle currentFilters object
-        if (currentFilters[filterType] === filterValue) {
-            delete currentFilters[filterType]; // Remove filter if it's already selected
-            event.target.classList.remove('active-filter'); // Remove active state
-        } else {
-            currentFilters[filterType] = filterValue; // Add filter otherwise
-            event.target.classList.add('active-filter'); // Add active state
-        }
-
-        // Construct API endpoint based on all active filters
-        let apiEndpoint = '/api/shoes/filtered';
-        let queryParameters = new URLSearchParams(currentFilters).toString();
-        if (queryParameters) {
-            apiEndpoint += `?${queryParameters}`;
-        }
+    // Function to handle filter button clicks
+    function handleFilterButtonClick(event) {
+        const filterType = event.target.getAttribute('data-filter');
+        const filterValue = event.target.getAttribute('data-value');
         
-        // Fetch filtered shoes
-        fetchFilteredShoes(apiEndpoint);
+        if (filterType && filterValue) {
+            // Update currentFilters object
+            currentFilters[filterType] = filterValue;
+    
+            // Construct API endpoint based on all active filters
+            let apiEndpoint = '/api/shoes';
+            let queryParameters = new URLSearchParams(currentFilters).toString();
+            if (queryParameters) {
+                apiEndpoint += `?${queryParameters}`;
+            }
+            
+            // Fetch filtered shoes
+            fetchFilteredShoes(apiEndpoint);
+        }
     }
-}
-
-
 
 
     function fetchFilteredShoes(apiEndpoint) {

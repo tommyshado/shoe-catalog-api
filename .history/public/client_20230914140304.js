@@ -91,25 +91,18 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
     let currentFilters = {};
-
+    // Function to handle filter button clicks
  // Function to handle filter button clicks
-// Function to handle filter button clicks
 function handleFilterButtonClick(event) {
     const filterType = event.target.getAttribute('data-filter');
     const filterValue = event.target.getAttribute('data-value');
     
     if (filterType && filterValue) {
-        // Toggle currentFilters object
-        if (currentFilters[filterType] === filterValue) {
-            delete currentFilters[filterType]; // Remove filter if it's already selected
-            event.target.classList.remove('active-filter'); // Remove active state
-        } else {
-            currentFilters[filterType] = filterValue; // Add filter otherwise
-            event.target.classList.add('active-filter'); // Add active state
-        }
-
+        // Update currentFilters object
+        currentFilters[filterType] = filterValue;
+    
         // Construct API endpoint based on all active filters
-        let apiEndpoint = '/api/shoes/filtered';
+        let apiEndpoint = '/api/shoes/filtered';  // Note the change here
         let queryParameters = new URLSearchParams(currentFilters).toString();
         if (queryParameters) {
             apiEndpoint += `?${queryParameters}`;
@@ -119,7 +112,6 @@ function handleFilterButtonClick(event) {
         fetchFilteredShoes(apiEndpoint);
     }
 }
-
 
 
 

@@ -69,8 +69,7 @@ export default function shoesService(db) {
       getShoesByBrandAndSize,
       getShoesByColor,
       getShoesByPrice,
-      getFilterData,
-      getFilteredShoes
+      getFilterData
     }
   }
   
