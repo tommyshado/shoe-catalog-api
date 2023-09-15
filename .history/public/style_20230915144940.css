@@ -4,7 +4,7 @@
 
 header {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-evenly;
     align-items: center;
     border-bottom: 1px black solid;
 }
@@ -31,7 +31,6 @@ header {
 .button_container {
   display: flex;
   justify-content: space-around;
-  
 }
 
 /* sign-login  */
@@ -331,10 +330,6 @@ p {
 
 .cart_button:hover {
   background-color: white;
-}
-
-.cart_container {
-  margin-left: 2em;
 }
 
 

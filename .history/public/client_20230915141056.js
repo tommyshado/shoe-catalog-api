@@ -167,10 +167,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   const urlParams = new URLSearchParams(window.location.search);
   const user = urlParams.get('user');
-
-  // Client-side JavaScript
-
-  
+console.log(user)
 
 //   cart
 
@@ -248,29 +245,3 @@ cartButton.addEventListener("click", function () {
 fetchCartItems();
 
 });
-
-
-document.addEventListener("DOMContentLoaded", async function() {
-    const res = await fetch('/api/check-session');
-    const data = await res.json();
-    
-    const loginButton = document.getElementById('loginButton');
-    const logoutButton = document.getElementById('logoutButton'); // Assuming you have added this button in your HTML
-  
-    // Toggle display of login and logout buttons based on session status
-    if (data.loggedIn) {
-      loginButton.style.display = 'none';
-      logoutButton.style.display = 'block';
-    } else {
-      loginButton.style.display = 'block';
-      logoutButton.style.display = 'none';
-    }
-  
-    // Attach click event to logout button
-    if (logoutButton) {
-      logoutButton.addEventListener("click", () => {
-        window.location.href = "/logout";
-      });
-    }
-  });
-  

@@ -255,9 +255,8 @@ document.addEventListener("DOMContentLoaded", async function() {
     const data = await res.json();
     
     const loginButton = document.getElementById('loginButton');
-    const logoutButton = document.getElementById('logoutButton'); // Assuming you have added this button in your HTML
+    const logoutButton = document.getElementById('logoutButton'); // Add this button in your HTML
   
-    // Toggle display of login and logout buttons based on session status
     if (data.loggedIn) {
       loginButton.style.display = 'none';
       logoutButton.style.display = 'block';
@@ -265,12 +264,4 @@ document.addEventListener("DOMContentLoaded", async function() {
       loginButton.style.display = 'block';
       logoutButton.style.display = 'none';
     }
-  
-    // Attach click event to logout button
-    if (logoutButton) {
-      logoutButton.addEventListener("click", () => {
-        window.location.href = "/logout";
-      });
-    }
   });
-  

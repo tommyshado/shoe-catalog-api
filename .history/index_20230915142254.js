@@ -60,12 +60,12 @@ const user_service = userService(db)
 
 
 const shoe_api = shoeAPI(shoe_service);
-const auth_api = AuthApi(app)
+const auth_api = AuthApi()
 
 const shoe_route = shoeRoute(shoe_api); 
 const signup_route = signupRoute(user_service)
 const home_route = homeRoute()
-const auth_route = AuthRoute()
+const auth_route = AuthRoute(auth_api)
 const login_route = loginRoute(user_service)
 
 
@@ -90,8 +90,7 @@ app.put("/api/cart/update", shoe_route.updateCartQuantity);
 app.get("/api/cart/items/:user_id", shoe_route.getCartItems);
 app.get("/api/cart/count/:user_id", shoe_route.getCartItemCount);
 app.post("/api/cart/checkout/:user_id", shoe_route.checkout);
-auth_api.checkSession();  
-auth_api.addLogoutRoute();  
+
 
 // routes
 app.get('/signup', signup_route.getSignupPage);

@@ -164,113 +164,78 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-
-  const urlParams = new URLSearchParams(window.location.search);
-  const user = urlParams.get('user');
-
-  // Client-side JavaScript
-
-  
-
-//   cart
-
   let cart = {};
 
-async function fetchCartItems() {
-  const userId = "yourUserIdHere";
-  const response = await fetch(`/api/cart/${userId}`);
-  const cartItems = await response.json();
-
-  cart = cartItems.reduce((acc, item) => {
-    acc[item.shoe_id] = {
-      id: item.shoe_id,
-      name: item.name,
-      size: item.size,
-      quantity: item.quantity
-    };
-    return acc;
-  }, {});
-  updateCartUI();
-}
-
-async function updateCartUI() {
-  let cartItems = Object.values(cart);
-
-  let cartTemplate = document.querySelector("#cartTemplate");
-  if (cartTemplate) {
-    let cartTemplateInstance = Handlebars.compile(cartTemplate.innerHTML);
-    let generatedHTML = cartTemplateInstance({ cartItems });
-    let cartItemsContainer = document.querySelector(".cart_items");
-    if (cartItemsContainer) {
-      cartItemsContainer.innerHTML = generatedHTML;
+  async function fetchCartItems() {
+    const userId = "yourUserIdHere"; // Replace with actual user ID
+    const response = await fetch(`/api/cart/${userId}`);
+    const cartItems = await response.json();
+  
+    cart = cartItems.reduce((acc, item) => {
+      acc[item.shoe_id] = {
+        id: item.shoe_id,
+        name: item.name,
+        size: item.size,
+        quantity: item.quantity
+      };
+      return acc;
+    }, {});
+  }
+  
+  function updateCartUI() {
+    let cartItems = Object.values(cart);
+  
+    let cartTemplate = document.querySelector("#cartTemplate");
+    if (cartTemplate) {
+      let cartTemplateInstance = Handlebars.compile(cartTemplate.innerHTML);
+      let generatedHTML = cartTemplateInstance({ cartItems: cartItems });
+  
+      let cartItemsContainer = document.querySelector(".cart_items");
+      if (cartItemsContainer) {
+        cartItemsContainer.innerHTML = generatedHTML;
+      }
     }
   }
-}
-
-document.addEventListener("click", function (event) {
-  if (event.target.classList.contains("add_shoe_button")) {
-    const shoeId = event.target.getAttribute("data-id");
-    if (cart[shoeId]) {
-      cart[shoeId].quantity += 1;
+  
+  document.addEventListener("click", function (event) {
+    if (event.target.classList.contains("add_shoe_button")) {
+      const shoeId = event.target.getAttribute("data-id");
+      if (cart[shoeId]) {
+        cart[shoeId].quantity += 1;
+      } else {
+        // Fetch details for the new shoe from the server, then add to cart
+        fetch(`/api/shoes/${shoeId}`)
+          .then(response => response.json())
+          .then(shoe => {
+            cart[shoeId] = {
+              id: shoe.id,
+              name: shoe.name,
+              size: shoe.size,
+              quantity: 1
+            };
+            updateCartUI();
+          });
+      }
       updateCartUI();
-    } else {
-      fetch(`/api/shoes/${shoeId}`)
-        .then(response => response.json())
-        .then(shoe => {
-          cart[shoeId] = {
-            id: shoe.id,
-            name: shoe.name,
-            size: shoe.size,
-            quantity: 1
-          };
-          updateCartUI();
-        })
-        .catch(error => console.error('An error occurred:', error));
-    }
-  }
-});
-
-document.addEventListener("click", function (event) {
-  if (event.target.classList.contains("checkout_button")) {
-    cart = {};
-    updateCartUI();
-  }
-});
-
-const cartModal = document.getElementById("cartModal");
-const cartButton = document.querySelector(".cart_button");
-
-cartButton.addEventListener("click", function () {
-  cartModal.classList.toggle("show");
-});
-
-// Initialize cart UI with items from the backend
-fetchCartItems();
-
-});
-
-
-document.addEventListener("DOMContentLoaded", async function() {
-    const res = await fetch('/api/check-session');
-    const data = await res.json();
-    
-    const loginButton = document.getElementById('loginButton');
-    const logoutButton = document.getElementById('logoutButton'); // Assuming you have added this button in your HTML
-  
-    // Toggle display of login and logout buttons based on session status
-    if (data.loggedIn) {
-      loginButton.style.display = 'none';
-      logoutButton.style.display = 'block';
-    } else {
-      loginButton.style.display = 'block';
-      logoutButton.style.display = 'none';
-    }
-  
-    // Attach click event to logout button
-    if (logoutButton) {
-      logoutButton.addEventListener("click", () => {
-        window.location.href = "/logout";
-      });
     }
   });
-  
+
+  document.addEventListener("click", function (event) {
+    if (event.target.classList.contains("checkout_button")) {
+      // Make API call to perform checkout
+      cart = {}; // Clear the cart
+      updateCartUI();
+    }
+  });
+
+  // Get the cart modal and cart button elements
+  const cartModal = document.getElementById("cartModal");
+  const cartButton = document.querySelector(".cart_button");
+
+  // Toggle the cart modal
+  cartButton.addEventListener("click", function () {
+    cartModal.classList.toggle("show");
+  });
+
+  updateCartUI();
+});

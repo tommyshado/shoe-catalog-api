@@ -143,13 +143,7 @@ export default function shoeAPI(shoeService) {
       getByColor,
       getByPrice,
       getFilters,
-      getFiltered,
-      addToCart,
-      removeFromCart,
-      updateCartQuantity,
-      getCartItems,
-      getCartItemCount,
-      checkout
+      getFiltered
     }
   }
   

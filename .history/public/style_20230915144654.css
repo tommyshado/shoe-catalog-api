@@ -27,13 +27,6 @@ header {
     align-items: center;
 }
 
-
-.button_container {
-  display: flex;
-  justify-content: space-around;
-  
-}
-
 /* sign-login  */
 
 .login_container {
@@ -331,10 +324,6 @@ p {
 
 .cart_button:hover {
   background-color: white;
-}
-
-.cart_container {
-  margin-left: 2em;
 }
 
 

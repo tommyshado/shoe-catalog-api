@@ -19,7 +19,6 @@ import loginRoute from "./routes/loginRoute.js";
 
 
 import shoeAPI from "./api/shoeAPI.js";  
-import AuthApi from "./api/authAPI.js";
 
 const app = express();
 
@@ -60,7 +59,6 @@ const user_service = userService(db)
 
 
 const shoe_api = shoeAPI(shoe_service);
-const auth_api = AuthApi(app)
 
 const shoe_route = shoeRoute(shoe_api); 
 const signup_route = signupRoute(user_service)
@@ -79,6 +77,13 @@ app.get("/api/shoes/size/:size", shoe_route.getBySize);
 app.get("/api/shoes/color/:color", shoe_route.getByColor);
 app.get("/api/shoes/price/:price", shoe_route.getByPrice);
 app.get("/api/filters", shoe_route.getFilters);
+app.get('/api/check-session', (req, res) => {
+  if (req.session && req.session.username) {
+    res.json({ loggedIn: true });
+  } else {
+    res.json({ loggedIn: false });
+  }
+});
 
 // New API route for multiple filters
 app.get("/api/shoes/filtered", shoe_route.getFiltered);
@@ -90,8 +95,7 @@ app.put("/api/cart/update", shoe_route.updateCartQuantity);
 app.get("/api/cart/items/:user_id", shoe_route.getCartItems);
 app.get("/api/cart/count/:user_id", shoe_route.getCartItemCount);
 app.post("/api/cart/checkout/:user_id", shoe_route.checkout);
-auth_api.checkSession();  
-auth_api.addLogoutRoute();  
+
 
 // routes
 app.get('/signup', signup_route.getSignupPage);

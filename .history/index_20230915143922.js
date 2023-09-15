@@ -90,8 +90,8 @@ app.put("/api/cart/update", shoe_route.updateCartQuantity);
 app.get("/api/cart/items/:user_id", shoe_route.getCartItems);
 app.get("/api/cart/count/:user_id", shoe_route.getCartItemCount);
 app.post("/api/cart/checkout/:user_id", shoe_route.checkout);
-auth_api.checkSession();  
-auth_api.addLogoutRoute();  
+auth_api.checkSession();  // Adds /api/check-session route
+auth_api.addLogoutRoute();  // Adds /api/logout route
 
 // routes
 app.get('/signup', signup_route.getSignupPage);

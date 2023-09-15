@@ -17,7 +17,7 @@ export default function loginRoute(userService) {
           if (validatedAccount.accountType === 'admin') {
             res.redirect('/shoeForm');  // Redirecting to ShoeForm.handlebars
           } else {
-            res.redirect(`/client.html?user=${req.session.userId}`); // Redirecting to home page for regular users
+            res.redirect('/'); // Redirecting to home page for regular users
           }
         } else {
           throw new Error("Invalid credentials");

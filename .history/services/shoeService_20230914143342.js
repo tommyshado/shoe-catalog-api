@@ -4,8 +4,8 @@ export default function shoesService(db) {
       return await db.any('SELECT * FROM "public"."shoes"');
     }
   
-    async function addShoe( { name, color, brand, price, size, in_stock, image_url } ) {
-      // const = shoe;
+    async function addShoe(shoe) {
+      const { name, color, brand, price, size, in_stock, image_url } = shoe;
       return await db.none('INSERT INTO "public"."shoes"(name, color, brand, price, size, in_stock, image_url) VALUES($1, $2, $3, $4, $5, $6, $7)', 
                            [name, color, brand, price, size, in_stock, image_url]);
     }
@@ -71,18 +71,7 @@ async function updateCartQuantity(cart_id, newQuantity) {
 }
 
 async function getCartItems(user_id) {
-  return await db.any(`
-      SELECT 
-          carts.cart_id,
-          carts.shoe_id,
-          carts.quantity,
-          shoes.name,
-          shoes.size,
-          ...
-      FROM "public"."carts" 
-      INNER JOIN "public"."shoes" ON carts.shoe_id = shoes.id
-      WHERE carts.user_id = $1
-  `, [user_id]);
+    return await db.any('SELECT * FROM "public"."carts" WHERE user_id = $1', [user_id]);
 }
 
 async function getCartItemCount(user_id) {
@@ -108,13 +97,7 @@ async function checkout(user_id) {
       getShoesByColor,
       getShoesByPrice,
       getFilterData,
-      getFilteredShoes,
-      addToCart,
-      removeFromCart,
-      updateCartQuantity,
-      getCartItems,
-      getCartItemCount,
-      checkout
+      getFilteredShoes
     }
   }
   

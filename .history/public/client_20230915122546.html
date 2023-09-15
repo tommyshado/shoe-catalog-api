@@ -84,20 +84,18 @@
     </script>
 
     <script id="cartTemplate" type="text/x-handlebars-template">
-      <h1>Shopping Cart</h1>
       <ul class="cart_list">
-        {{#each cartItems}}
-          <li data-id="{{id}}">
-            <span class="item_name">{{name}} (Size: {{size}})</span>
-            <span class="item_quantity">Quantity: {{quantity}}</span>
-            <button class="increment">+</button>
-            <button class="decrement">-</button>
-          </li>
-        {{/each}}
+          {{#each cartItems}}
+              <li data-id="{{id}}">
+                  <span class="item_name">{{name}}</span>
+                  <span class="item_quantity">{{quantity}}</span>
+                  <button class="increment">+</button>
+                  <button class="decrement">-</button>
+              </li>
+          {{/each}}
       </ul>
       <button class="checkout_button">Checkout</button>
-    </script>
-    
+  </script>
   
 
     <header>
@@ -113,22 +111,17 @@
         <img src="../images/logo.png" class="logo_img" alt="" />
       </div>
 
-      <div class="button_container">
-        <div class="login_container">
-          <div class="auth_container">
-            <button id="loginButton">Login</button>
-            <button id="logoutButton" style="display: none;">Logout</button>
-            <button id="signupButton">Signup</button>
-          </div>
+      <div class="login_container">
+        <div class="auth_container">
+          <button id="loginButton">Login</button>
+          <!-- <button id="signupButton">Signup</button> -->
         </div>
-        
-          <div class="cart_container">
-            <button class="cart_button"> <img src="../images/shopping-cart.png" class="cart_img" alt="" />
-            Cart</button>
-          </div>
+
+        <div class="cart_container">
+          <button class="cart_button"> <img src="../images/shopping-cart.png" class="cart_img" alt="" />
+          Cart</button>
         </div>
       </div>
-     
     </header>
     <div id="filterArea"></div>
 
@@ -142,6 +135,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.11/handlebars.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
-    <script src="client.js" type="module" defer></script>
+    <script src="client.js" type="module"></script>
   </body>
 </html>

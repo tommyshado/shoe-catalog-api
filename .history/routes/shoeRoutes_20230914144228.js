@@ -139,12 +139,7 @@ export default function shoeRoute(shoe_api) {
         getByPrice,
         getFilters,
         getFiltered,
-        addToCart,
-        removeFromCart,
-        updateCartQuantity,
-        getCartItems,
-        getCartItemCount,
-        checkout
+
     }
 }
 

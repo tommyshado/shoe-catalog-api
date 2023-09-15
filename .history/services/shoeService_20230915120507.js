@@ -71,18 +71,7 @@ async function updateCartQuantity(cart_id, newQuantity) {
 }
 
 async function getCartItems(user_id) {
-  return await db.any(`
-      SELECT 
-          carts.cart_id,
-          carts.shoe_id,
-          carts.quantity,
-          shoes.name,
-          shoes.size,
-          ...
-      FROM "public"."carts" 
-      INNER JOIN "public"."shoes" ON carts.shoe_id = shoes.id
-      WHERE carts.user_id = $1
-  `, [user_id]);
+    return await db.any('SELECT * FROM "public"."carts" WHERE user_id = $1', [user_id]);
 }
 
 async function getCartItemCount(user_id) {
