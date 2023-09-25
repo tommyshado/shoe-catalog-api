@@ -136,19 +136,17 @@ export default function shoeAPI(shoeService) {
 
   async function getCartById(req, res) {
     try {
-        console.log('Inside getCartById');  // Debug line
         const { cart_id } = req.params;
-        const cartItem = await shoeService.getCartById(cart_id);
-        console.log('Fetched cart item:', cartItem);  // Debug line
-        res.status(200).json({ data: cartItem });
+        const item = await shoeService.getCartById(cart_id);
+        if (item) {
+            res.status(200).json({ data: item });
+        } else {
+            res.status(404).json({ message: "Item not found" });
+        }
     } catch (err) {
-        console.error('Error:', err);  // Debug line
         res.status(500).json({ error: err.message });
     }
-}
-
-
-
+    
   
     return {
       getAll,

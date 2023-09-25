@@ -251,27 +251,42 @@ fetchCartItems();
 
 
 document.addEventListener("DOMContentLoaded", async function() {
-    const res = await fetch('/api/check-session');
+    try {
+      const res = await fetch('/api/check-session');
   
-    const data = await res.json();
-    
-    const loginButton = document.getElementById('loginButton');
-    const logoutButton = document.getElementById('logoutButton'); // Assuming you have added this button in your HTML
+      // Check if the fetch was successful
+      if (res.status !== 200) {
+        console.error(`Fetch failed: ${res.status} ${res.statusText}`);
+        return;
+      }
   
-    // Toggle display of login and logout buttons based on session status
-    if (data.loggedIn) {
-      loginButton.style.display = 'none';
-      logoutButton.style.display = 'block';
-    } else {
-      loginButton.style.display = 'block';
-      logoutButton.style.display = 'none';
-    }
+      // Log the raw server response
+      const text = await res.text();
+      console.log("Raw response:", text);
   
-    // Attach click event to logout button
-    if (logoutButton) {
-      logoutButton.addEventListener("click", () => {
-        window.location.href = "/logout";
-      });
+      // Try parsing the JSON
+      const data = JSON.parse(text);
+  
+      const loginButton = document.getElementById('loginButton');
+      const logoutButton = document.getElementById('logoutButton'); // Assuming you've added this button in your HTML
+  
+      // Toggle display of login and logout buttons based on session status
+      if (data.loggedIn) {
+        loginButton.style.display = 'none';
+        logoutButton.style.display = 'block';
+      } else {
+        loginButton.style.display = 'block';
+        logoutButton.style.display = 'none';
+      }
+  
+      // Attach click event to logout button
+      if (logoutButton) {
+        logoutButton.addEventListener("click", () => {
+          window.location.href = "/logout";
+        });
+      }
+    } catch (error) {
+      console.error('An error occurred:', error);
     }
   });
   

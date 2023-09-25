@@ -239,12 +239,10 @@ p {
 }
 
 .add_shoe_button {
-  background-color: rgb(255, 255, 255);
+  background-color: rgb(57, 57, 57);
   margin-top: 20px;
   font-size: 1.2rem;
   font-weight: bold;
-  color: black;
-  border: 1px solid black;
 }
 
 

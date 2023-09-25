@@ -140,7 +140,6 @@ export default function shoeRoute(shoe_api) {
     
     return {
         get,
-        getCartById,
         add,
         showShoeForm,
         getByBrand,
@@ -155,7 +154,7 @@ export default function shoeRoute(shoe_api) {
         getCartItems,
         getCartItemCount,
         checkout,
-        
+        getCartById
     }
 }
 

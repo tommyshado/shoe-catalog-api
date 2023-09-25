@@ -252,7 +252,6 @@ fetchCartItems();
 
 document.addEventListener("DOMContentLoaded", async function() {
     const res = await fetch('/api/check-session');
-  
     const data = await res.json();
     
     const loginButton = document.getElementById('loginButton');

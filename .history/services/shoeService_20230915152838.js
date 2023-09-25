@@ -117,8 +117,7 @@ async function getCartItemById(cart_id) {
       updateCartQuantity,
       getCartItems,
       getCartItemCount,
-      checkout,
-      getCartItemById
+      checkout
     }
   }
   
