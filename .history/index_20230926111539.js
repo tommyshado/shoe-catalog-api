@@ -62,7 +62,7 @@ const user_service = userService(db)
 const shoe_api = shoeAPI(shoe_service);
 const auth_api = AuthApi(app)
 
-const shoe_route = shoeRoute(shoe_api, shoe_service); 
+const shoe_route = shoeRoute(shoe_api); 
 const signup_route = signupRoute(user_service)
 const home_route = homeRoute()
 const auth_route = AuthRoute()
@@ -109,12 +109,6 @@ app.post('/login', login_route.postLoginPage);
 
 // admin route
 app.get('/shoeForm', shoe_route.showShoeForm);
-
-app.get('/test/:id', (req, res) => {
-  console.log('req.params:', req.params);
-  res.send('Test route');
-});
-
 
 
 const PORT = process.env.PORT || 3014;

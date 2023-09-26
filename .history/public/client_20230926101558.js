@@ -174,87 +174,75 @@ document.addEventListener("DOMContentLoaded", function () {
 
 //   cart
 
-  let cart = {};
+let cart = {};
 
-  async function fetchCartItems() {
-    try {
-      const userId = user;
-      console.log("User ID:", userId);
-      const response = await fetch(`/api/cart/items/${userId}`);
-
-      
-      if (!response.ok) {
-        console.log(`Error fetching cart items: ${response.status} - ${response.statusText}`);
-        return;
-      }
-      
-      const cartItems = await response.json();
-      console.log("Cart Items:", cartItems); // Debugging line
-    
-      cart = cartItems.reduce((acc, item) => {
-        acc[item.shoe_id] = {
-          id: item.shoe_id,
-          name: item.name,
-          size: item.size,
-          quantity: item.quantity
-        };
-        return acc;
-      }, {});
-      
-      updateCartUI();
-    } catch (error) {
-      console.error('An error occurred:', error);
-    }
-  }
+async function fetchCartItems() {
+  console.log('Fetching cart items...');
+  const userId = user; // Ensure 'user' is defined and has a value
+  console.log(userId)
+  const response = await fetch(`/api/cart/${userId}`);
+  const cartItems = await response.json();
   
+  console.log('Received cart items:', cartItems); // Debug line
+
+  cart = cartItems.reduce((acc, item) => {
+    acc[item.shoe_id] = {
+      id: item.shoe_id,
+      name: item.name,
+      size: item.size,
+      quantity: item.quantity
+    };
+    return acc;
+  }, {});
+  updateCartUI();
+}
 
 async function updateCartUI() {
+  console.log('Updating cart UI...'); // Debug line
   let cartItems = Object.values(cart);
+  
+  console.log('Cart items for UI:', cartItems); // Debug line
 
   let cartTemplate = document.querySelector("#cartTemplate");
   if (cartTemplate) {
     let cartTemplateInstance = Handlebars.compile(cartTemplate.innerHTML);
     let generatedHTML = cartTemplateInstance({ cartItems });
+    
+    console.log('Generated HTML:', generatedHTML); // Debug line
+    
     let cartItemsContainer = document.querySelector(".cart_items");
     if (cartItemsContainer) {
       cartItemsContainer.innerHTML = generatedHTML;
+    } else {
+      console.log('Cart items container not found'); // Debug line
     }
+  } else {
+    console.log('Cart template not found'); // Debug line
   }
 }
 
 document.addEventListener("click", function (event) {
   if (event.target.classList.contains("add_shoe_button")) {
     const shoeId = event.target.getAttribute("data-id");
-    
-    // Debugging: Check if shoeId is captured correctly
-    console.log("Captured Shoe ID: ", shoeId);
-
-    fetch(`/api/shoes/${shoeId}`)
-      .then(response => {
-        console.log("Raw Shoe Response: ", response);
-        
-        if (response.ok) {
-          return response.json();
-        } else {
-          console.log(`Error fetching shoe data: ${response.status} - ${response.statusText}`);
-          throw new Error('Not a valid response');
-        }
-      })
-      .then(shoe => {
-        console.log("Fetched Shoe Data: ", shoe); // Debugging line to check the fetched data
-        cart[shoeId] = {
-          id: shoe.data.id,
-          name: shoe.data.name,
-          size: shoe.data.size,
-          quantity: 1
-        };
-        
-        updateCartUI();
-      })
-      .catch(error => console.error('An error occurred:', error));
+    if (cart[shoeId]) {
+      cart[shoeId].quantity += 1;
+      updateCartUI();
+    } else {
+      fetch(`/api/shoes/${shoeId}`)
+        .then(response => response.json())
+        .then(shoe => {
+          cart[shoeId] = {
+            id: shoe.id,
+            name: shoe.name,
+            size: shoe.size,
+            quantity: 1
+          };
+          updateCartUI();
+        })
+        .catch(error => console.error('An error occurred:', error));
+    }
   }
 });
-
 
 document.addEventListener("click", function (event) {
   if (event.target.classList.contains("checkout_button")) {

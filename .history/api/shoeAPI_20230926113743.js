@@ -147,24 +147,21 @@ export default function shoeAPI(shoeService) {
     }
 }
 
-
-
-
 async function getShoeById(req, res) {
-  console.log('Inside api.getShoeById');  // Debug line
   try {
-    const { shoe_id } = req.params; // Make sure this line works
-    console.log(`Calling service with shoe_id: ${shoe_id}`);
-    const shoe = await shoeService.getShoeById(shoe_id);
-
+      console.log('Inside getShoeById');  // Debug line
+      const { shoe_id } = req.params;
+      const shoe = await shoeService.getShoeById(shoe_id);  // Use the service here
+      console.log('Fetched shoe:', shoe);  // Debug line
+      
       if (shoe) {
-          return res.status(200).json({ data: shoe });
+          res.status(200).json({ data: shoe });
       } else {
-          return res.status(404).json({ message: 'Shoe not found' });
+          res.status(404).json({ message: 'Shoe not found' });
       }
   } catch (err) {
       console.error('Error:', err);  // Debug line
-      return res.status(500).json({ error: err.message });
+      res.status(500).json({ error: err.message });
   }
 }
 

@@ -85,11 +85,8 @@
       <ul class="cart_list">
         {{#each cartItems}}
           <li data-id="{{id}}">
-            <div>
-
-              <span class="item_name">{{name}} (Size: {{size}})</span>
-              <span class="item_quantity">Quantity: {{quantity}}</span>
-            </div>
+            <span class="item_name">{{name}} (Size: {{size}})</span>
+            <span class="item_quantity">Quantity: {{quantity}}</span>
             <button class="increment">+</button>
             <button class="decrement">-</button>
           </li>

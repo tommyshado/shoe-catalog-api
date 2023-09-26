@@ -1,5 +1,5 @@
 
-export default function shoeRoute(shoe_api, shoe_service) {
+export default function shoeRoute(shoe_api) {
     
     async function get(req, res) {
         try {
@@ -137,25 +137,22 @@ export default function shoeRoute(shoe_api, shoe_service) {
     }
 
     
-
-
-async function getShoeById(req, res) {
+async function getById(req, res) {
     try {
-        console.log('Inside route.getShoeById')
+        const shoeId = req.params.shoe_id;
+        console.log(`Received request for shoe with ID: ${shoeId}`);  // Debugging line
 
-        const { shoe_id } = req.params;
-       const shoe = await shoe_service.getShoeById(req.params.shoe_id);
-
-        console.log('Fetched shoe:', shoe);  // Debug line
+        // Assume getShoeById is a function you define to fetch a shoe by its ID from the database
+        const shoe = await shoe_api.getShoeById(shoeId);
 
         if (shoe) {
-            res.status(200).json({ data: shoe });
+            res.status(200).json(shoe);
         } else {
-            res.status(404).json({ message: 'Shoe not found' });
+            res.status(404).json({ message: "Shoe not found" });
         }
     } catch (err) {
-        console.error('Error:', err);  // Debug line
-        res.status(500).json({ error: err.message });
+        console.error(err);
+        res.status(500).json({ error: "Internal Server Error" });
     }
 }
 
@@ -179,7 +176,7 @@ async function getShoeById(req, res) {
         getCartItems,
         getCartItemCount,
         checkout,
-        getShoeById,
+        getById
         
     }
 }

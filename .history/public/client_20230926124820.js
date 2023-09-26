@@ -180,8 +180,7 @@ document.addEventListener("DOMContentLoaded", function () {
     try {
       const userId = user;
       console.log("User ID:", userId);
-      const response = await fetch(`/api/cart/items/${userId}`);
-
+      const response = await fetch(`/api/cart/${userId}`);
       
       if (!response.ok) {
         console.log(`Error fetching cart items: ${response.status} - ${response.statusText}`);

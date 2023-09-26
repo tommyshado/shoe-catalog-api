@@ -62,7 +62,7 @@ const user_service = userService(db)
 const shoe_api = shoeAPI(shoe_service);
 const auth_api = AuthApi(app)
 
-const shoe_route = shoeRoute(shoe_api, shoe_service); 
+const shoe_route = shoeRoute(shoe_api); 
 const signup_route = signupRoute(user_service)
 const home_route = homeRoute()
 const auth_route = AuthRoute()

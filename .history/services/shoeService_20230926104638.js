@@ -105,16 +105,6 @@ async function getCartItemById(cart_id) {
     return await db.oneOrNone('SELECT * FROM "public"."carts" WHERE cart_id = $1', [cart_id]);
 }
 
-async function getShoeById(shoeId) {
-  console.log('Inside service.getShoeById');
-  try {
-    return await db.oneOrNone('SELECT * FROM "public"."shoes" WHERE id = $1', [shoeId]);
-  } catch (err) {
-    console.error(`Error fetching shoe by ID: ${err}`);
-    return null;
-  }
-}
-
 
   
     return  {
@@ -133,8 +123,7 @@ async function getShoeById(shoeId) {
       getCartItems,
       getCartItemCount,
       checkout,
-      getCartItemById,
-      getShoeById
+      getCartItemById
     }
   }
   

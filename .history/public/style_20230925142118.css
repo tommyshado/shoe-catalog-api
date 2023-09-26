@@ -235,7 +235,7 @@ input {
 h3 {
   margin: 20px 0; /* Add some vertical spacing around the h3 elements */
   color: rgb(10, 10, 10);
-font-size: 0.9rem;
+
 }
 
 p {
@@ -362,6 +362,3 @@ p {
 }
 
 
-.checkout_button {
-  margin: 0 auto;
-}

@@ -3,7 +3,6 @@
 body {
   font-family: 'Quicksand', sans-serif;
 font-family: 'Simonetta', cursive;
-font-size: 0.8rem;
 }
 
 /* header */
@@ -235,7 +234,7 @@ input {
 h3 {
   margin: 20px 0; /* Add some vertical spacing around the h3 elements */
   color: rgb(10, 10, 10);
-font-size: 0.9rem;
+  font-size: 1.2rem;
 }
 
 p {
@@ -362,6 +361,3 @@ p {
 }
 
 
-.checkout_button {
-  margin: 0 auto;
-}

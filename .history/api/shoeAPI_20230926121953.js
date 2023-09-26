@@ -155,7 +155,7 @@ async function getShoeById(req, res) {
   try {
     const { shoe_id } = req.params; // Make sure this line works
     console.log(`Calling service with shoe_id: ${shoe_id}`);
-    const shoe = await shoeService.getShoeById(shoe_id);
+    const shoe = await shoe_service.getShoeById(shoe_id);
 
       if (shoe) {
           return res.status(200).json({ data: shoe });

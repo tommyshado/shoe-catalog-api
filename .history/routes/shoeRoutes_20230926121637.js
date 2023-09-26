@@ -144,7 +144,7 @@ async function getShoeById(req, res) {
         console.log('Inside route.getShoeById')
 
         const { shoe_id } = req.params;
-       const shoe = await shoe_service.getShoeById(req.params.shoe_id);
+       const shoe = await shoeService.getShoeById(req.params.shoe_id);
 
         console.log('Fetched shoe:', shoe);  // Debug line
 

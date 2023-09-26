@@ -1,5 +1,5 @@
 
-export default function shoeRoute(shoe_api, shoe_service) {
+export default function shoeRoute(shoe_api) {
     
     async function get(req, res) {
         try {
@@ -141,10 +141,10 @@ export default function shoeRoute(shoe_api, shoe_service) {
 
 async function getShoeById(req, res) {
     try {
-        console.log('Inside route.getShoeById')
+        console.log('Inside getShoeById');  // Debug line
 
         const { shoe_id } = req.params;
-       const shoe = await shoe_service.getShoeById(req.params.shoe_id);
+        const shoe = await shoe_api.getShoeById(shoe_id);  // Assume you have a getShoeById method in your service
 
         console.log('Fetched shoe:', shoe);  // Debug line
 
@@ -165,6 +165,7 @@ async function getShoeById(req, res) {
     return {
         get,
         getCartById,
+       
         add,
         showShoeForm,
         getByBrand,

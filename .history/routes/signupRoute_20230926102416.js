@@ -33,7 +33,7 @@ export default function signupRoute(userService) {
             req.session.username = username;
 
             // Redirect to the home page
-            res.redirect('/');
+            res.redirect('/home');
 
         } catch (error) {
             // Handle error (you'd also log this in a real app)

@@ -146,16 +146,19 @@ export default function shoeAPI(shoeService) {
         res.status(500).json({ error: err.message });
     }
 }
-
-
-
-
 async function getShoeById(req, res) {
-  console.log('Inside api.getShoeById');  // Debug line
+  console.log('Inside getShoeById');  // Debug line
+  console.log('req.params:', req.params);  // Debug line
+  console.log('res object:', res);  // Debug line
+
   try {
-    const { shoe_id } = req.params; // Make sure this line works
-    console.log(`Calling service with shoe_id: ${shoe_id}`);
-    const shoe = await shoeService.getShoeById(shoe_id);
+      const { shoe_id } = req.params;
+
+      if(!shoe_id) {
+          return res.status(400).json({ message: "shoe_id is required" });
+      }
+
+      const shoe = await shoe_api.getShoeById(shoe_id);
 
       if (shoe) {
           return res.status(200).json({ data: shoe });

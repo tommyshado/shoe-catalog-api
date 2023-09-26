@@ -106,7 +106,7 @@ async function getCartItemById(cart_id) {
 }
 
 async function getShoeById(shoeId) {
-  console.log('Inside service.getShoeById');
+  console.log(`Fetching shoe details: Shoe ID = ${shoeId}`);
   try {
     return await db.oneOrNone('SELECT * FROM "public"."shoes" WHERE id = $1', [shoeId]);
   } catch (err) {

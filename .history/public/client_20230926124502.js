@@ -176,37 +176,25 @@ document.addEventListener("DOMContentLoaded", function () {
 
   let cart = {};
 
-  async function fetchCartItems() {
-    try {
-      const userId = user;
-      console.log("User ID:", userId);
-      const response = await fetch(`/api/cart/items/${userId}`);
+async function fetchCartItems() {
+  const userId = user;
+  console.log("User ID:", userId);
+  const response = await fetch(`/api/cart/${userId}`);
+  const cartItems = await response.json();
 
-      
-      if (!response.ok) {
-        console.log(`Error fetching cart items: ${response.status} - ${response.statusText}`);
-        return;
-      }
-      
-      const cartItems = await response.json();
-      console.log("Cart Items:", cartItems); // Debugging line
-    
-      cart = cartItems.reduce((acc, item) => {
-        acc[item.shoe_id] = {
-          id: item.shoe_id,
-          name: item.name,
-          size: item.size,
-          quantity: item.quantity
-        };
-        return acc;
-      }, {});
-      
-      updateCartUI();
-    } catch (error) {
-      console.error('An error occurred:', error);
-    }
-  }
-  
+  console.log("Cart Items:", cartItems); // Debugging line
+
+  cart = cartItems.reduce((acc, item) => {
+    acc[item.shoe_id] = {
+      id: item.shoe_id,
+      name: item.name,
+      size: item.size,
+      quantity: item.quantity
+    };
+    return acc;
+  }, {});
+  updateCartUI();
+}
 
 async function updateCartUI() {
   let cartItems = Object.values(cart);

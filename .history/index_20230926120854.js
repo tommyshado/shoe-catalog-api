@@ -62,7 +62,7 @@ const user_service = userService(db)
 const shoe_api = shoeAPI(shoe_service);
 const auth_api = AuthApi(app)
 
-const shoe_route = shoeRoute(shoe_api, shoe_service); 
+const shoe_route = shoeRoute(shoe_api); 
 const signup_route = signupRoute(user_service)
 const home_route = homeRoute()
 const auth_route = AuthRoute()
@@ -91,7 +91,13 @@ app.put("/api/cart/update", shoe_route.updateCartQuantity);
 app.get("/api/cart/items/:user_id", shoe_route.getCartItems);
 app.get("/api/cart/count/:user_id", shoe_route.getCartItemCount);
 app.post("/api/cart/checkout/:user_id", shoe_route.checkout);
-app.get("/api/shoes/:shoe_id", shoe_route.getShoeById);
+app.get("/api/shoes/:shoe_id", (req, res) => {
+  console.log("Inside test route");
+  console.log("req.params:", req.params);
+  console.log("res object:", res);
+  res.send("Test complete");
+});
+
 auth_api.checkSession();  
 auth_api.addLogoutRoute();  
 

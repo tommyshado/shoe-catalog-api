@@ -1,5 +1,5 @@
 
-export default function shoeRoute(shoe_api, shoe_service) {
+export default function shoeRoute(shoe_api) {
     
     async function get(req, res) {
         try {
