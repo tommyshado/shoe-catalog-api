@@ -296,36 +296,6 @@ fetchCartItems();
 });
 
 
-// Client-side: Adding an item to cart
-async function addItemToCart(shoeId, quantity, userId) {
-  try {
-    const response = await fetch(`/api/cart/add`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ shoeId, quantity, userId })
-    });
-    if (response.ok) {
-      await fetchCartItems();  // Update cart items from the server
-    }
-  } catch (err) {
-    console.error('Error adding item to cart:', err);
-  }
-}
-
-
-async function removeItemFromCart(cartId) {
-  try {
-    const response = await fetch(`/api/cart/remove/${cartId}`, { method: 'DELETE' });
-    if (response.ok) {
-      await fetchCartItems();  // Update cart items from the server
-    }
-  } catch (err) {
-    console.error('Error removing item from cart:', err);
-  }
-}
-
 
 document.addEventListener("DOMContentLoaded", async function() {
     const res = await fetch('/api/check-session');

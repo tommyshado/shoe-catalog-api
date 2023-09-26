@@ -267,19 +267,18 @@ document.addEventListener("click", function (event) {
 
 const cartModal = document.getElementById("cartModal");
 const cartButton = document.querySelector(".cart_button");
-const overlay = document.getElementById("overlay");  // Get the overlay element
 
 cartButton.addEventListener("click", function (event) {
-  event.stopPropagation();
+  event.stopPropagation(); 
   cartModal.classList.toggle("show");
-  overlay.style.display = "block";  // Show the overlay when the modal opens
 });
 
-// Function to close the modal and hide the overlay
+// Function to close the modal if clicking outside of it
 function closeOnOutsideClick(event) {
   const modal = document.getElementById("cartModal");
+  
+  // Remove the 'show' class to hide the modal
   modal.classList.remove("show");
-  overlay.style.display = "none";  // Hide the overlay when the modal closes
 }
 
 // Stop propagation of click events within the modal content
@@ -295,36 +294,6 @@ fetchCartItems();
 
 });
 
-
-// Client-side: Adding an item to cart
-async function addItemToCart(shoeId, quantity, userId) {
-  try {
-    const response = await fetch(`/api/cart/add`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ shoeId, quantity, userId })
-    });
-    if (response.ok) {
-      await fetchCartItems();  // Update cart items from the server
-    }
-  } catch (err) {
-    console.error('Error adding item to cart:', err);
-  }
-}
-
-
-async function removeItemFromCart(cartId) {
-  try {
-    const response = await fetch(`/api/cart/remove/${cartId}`, { method: 'DELETE' });
-    if (response.ok) {
-      await fetchCartItems();  // Update cart items from the server
-    }
-  } catch (err) {
-    console.error('Error removing item from cart:', err);
-  }
-}
 
 
 document.addEventListener("DOMContentLoaded", async function() {

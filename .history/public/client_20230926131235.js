@@ -208,21 +208,19 @@ document.addEventListener("DOMContentLoaded", function () {
   }
   
 
-  async function updateCartUI() {
-    let cartItems = Object.values(cart);
-  
-    let cartTemplate = document.querySelector("#cartTemplate");
-    if (cartTemplate) {
-      let cartTemplateInstance = Handlebars.compile(cartTemplate.innerHTML);
-      let generatedHTML = cartTemplateInstance({ cartItems });
-  
-      let cartItemsContainer = document.querySelector(".cart_list");
-      if (cartItemsContainer) {
-        cartItemsContainer.innerHTML = generatedHTML;
-      }
+async function updateCartUI() {
+  let cartItems = Object.values(cart);
+
+  let cartTemplate = document.querySelector("#cartTemplate");
+  if (cartTemplate) {
+    let cartTemplateInstance = Handlebars.compile(cartTemplate.innerHTML);
+    let generatedHTML = cartTemplateInstance({ cartItems });
+    let cartItemsContainer = document.querySelector(".cart_items");
+    if (cartItemsContainer) {
+      cartItemsContainer.innerHTML = generatedHTML;
     }
   }
-  
+}
 
 document.addEventListener("click", function (event) {
   if (event.target.classList.contains("add_shoe_button")) {
@@ -267,25 +265,20 @@ document.addEventListener("click", function (event) {
 
 const cartModal = document.getElementById("cartModal");
 const cartButton = document.querySelector(".cart_button");
-const overlay = document.getElementById("overlay");  // Get the overlay element
 
-cartButton.addEventListener("click", function (event) {
-  event.stopPropagation();
+cartButton.addEventListener("click", function () {
   cartModal.classList.toggle("show");
-  overlay.style.display = "block";  // Show the overlay when the modal opens
 });
 
-// Function to close the modal and hide the overlay
+// Function to close the modal if clicking outside of it
 function closeOnOutsideClick(event) {
   const modal = document.getElementById("cartModal");
-  modal.classList.remove("show");
-  overlay.style.display = "none";  // Hide the overlay when the modal closes
+  
+  // Check if the click is outside the modal
+  if (event.target === modal) {
+    modal.classList.remove("show");
+  }
 }
-
-// Stop propagation of click events within the modal content
-cartModal.addEventListener("click", function (event) {
-  event.stopPropagation();
-});
 
 // Attach the function to the 'click' event on the document body
 document.body.addEventListener("click", closeOnOutsideClick);
@@ -293,39 +286,21 @@ document.body.addEventListener("click", closeOnOutsideClick);
 // Initialize cart UI with items from the backend
 fetchCartItems();
 
+
 });
 
 
-// Client-side: Adding an item to cart
-async function addItemToCart(shoeId, quantity, userId) {
-  try {
-    const response = await fetch(`/api/cart/add`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ shoeId, quantity, userId })
-    });
-    if (response.ok) {
-      await fetchCartItems();  // Update cart items from the server
-    }
-  } catch (err) {
-    console.error('Error adding item to cart:', err);
+function closeOnOutsideClick(event) {
+  const modal = document.getElementById("cartModal");
+  
+  // Check if the click is outside the modal
+  if (event.target === modal) {
+    modal.classList.remove("show");
   }
 }
 
-
-async function removeItemFromCart(cartId) {
-  try {
-    const response = await fetch(`/api/cart/remove/${cartId}`, { method: 'DELETE' });
-    if (response.ok) {
-      await fetchCartItems();  // Update cart items from the server
-    }
-  } catch (err) {
-    console.error('Error removing item from cart:', err);
-  }
-}
-
+// Attach the function to the 'click' event on the document body
+document.body.addEventListener("click", closeOnOutsideClick)
 
 document.addEventListener("DOMContentLoaded", async function() {
     const res = await fetch('/api/check-session');

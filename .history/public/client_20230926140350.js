@@ -266,20 +266,24 @@ document.addEventListener("click", function (event) {
 });
 
 const cartModal = document.getElementById("cartModal");
-const cartButton = document.querySelector(".cart_button");
-const overlay = document.getElementById("overlay");  // Get the overlay element
+const cartButton = document.getElementById("cartButton");
+const overlay = document.getElementById("overlay");
 
 cartButton.addEventListener("click", function (event) {
-  event.stopPropagation();
+  event.stopPropagation(); // Prevent the click from propagating to the body
   cartModal.classList.toggle("show");
-  overlay.style.display = "block";  // Show the overlay when the modal opens
+  overlay.style.display = "block"; // Show overlay
 });
 
-// Function to close the modal and hide the overlay
+// Function to close the modal
+function closeModal() {
+  cartModal.classList.remove("show");
+  overlay.style.display = "none"; // Hide overlay
+}
+
+// Close the modal if clicking outside of it
 function closeOnOutsideClick(event) {
-  const modal = document.getElementById("cartModal");
-  modal.classList.remove("show");
-  overlay.style.display = "none";  // Hide the overlay when the modal closes
+  closeModal();
 }
 
 // Stop propagation of click events within the modal content
@@ -287,44 +291,16 @@ cartModal.addEventListener("click", function (event) {
   event.stopPropagation();
 });
 
+// Close the modal if clicking on the overlay
+overlay.addEventListener("click", function (event) {
+  closeModal();
+});
+
 // Attach the function to the 'click' event on the document body
 document.body.addEventListener("click", closeOnOutsideClick);
 
-// Initialize cart UI with items from the backend
-fetchCartItems();
-
 });
 
-
-// Client-side: Adding an item to cart
-async function addItemToCart(shoeId, quantity, userId) {
-  try {
-    const response = await fetch(`/api/cart/add`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ shoeId, quantity, userId })
-    });
-    if (response.ok) {
-      await fetchCartItems();  // Update cart items from the server
-    }
-  } catch (err) {
-    console.error('Error adding item to cart:', err);
-  }
-}
-
-
-async function removeItemFromCart(cartId) {
-  try {
-    const response = await fetch(`/api/cart/remove/${cartId}`, { method: 'DELETE' });
-    if (response.ok) {
-      await fetchCartItems();  // Update cart items from the server
-    }
-  } catch (err) {
-    console.error('Error removing item from cart:', err);
-  }
-}
 
 
 document.addEventListener("DOMContentLoaded", async function() {

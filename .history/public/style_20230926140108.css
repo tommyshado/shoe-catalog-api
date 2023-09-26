@@ -361,7 +361,6 @@ p {
   background-color: white;
   overflow-y: auto;
   transition: right 0.3s ease;
-  z-index: 2;
 }
 
 .cart_modal.show {
@@ -383,7 +382,7 @@ justify-content: center;
   margin-left: 1em;
 }
 
-.overlay {
+/* .overlay {
   display: none;
   position: fixed;
   top: 0;
@@ -391,5 +390,5 @@ justify-content: center;
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.7);
-  z-index: 1;
-}
+  z-index: 1; /* Make sure it appears behind the modal */
+} */
