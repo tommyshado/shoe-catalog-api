@@ -349,9 +349,8 @@ p {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  height: 110vh;
+  height: 80vh;
   overflow: scroll;
-  margin-top: 2em;
 }
 
 .cart_modal {
@@ -437,4 +436,8 @@ ul {
   width: 80px;
   margin-top: 1em;
   margin-left: 2em;
+}
+
+.cart_modal {
+  margin-top: 2em;
 }

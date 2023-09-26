@@ -1,9 +1,8 @@
 export default function shoesService(db) {
     // Existing Methods
     async function getAllShoes() {
-      return await db.any('SELECT * FROM "public"."shoes" ORDER BY id ASC');
+      return await db.any('SELECT * FROM "public"."shoes"');
     }
-    
   
     async function addShoe( { name, color, brand, price, size, in_stock, image_url } ) {
       // const = shoe;
@@ -73,17 +72,9 @@ export default function shoesService(db) {
 
 
 async function removeFromCart(cart_id) {
-  console.log(`Removing from cart: Cart ID = ${cart_id}`);
-  
-  const cartItem = await db.one('SELECT * FROM "public"."carts" WHERE cart_id = $1', [cart_id]);
-  
-  // Update the stock in the shoes table
-  await db.none('UPDATE "public"."shoes" SET in_stock = in_stock + $1 WHERE id = $2', [cartItem.quantity, cartItem.shoe_id]);
-  
-  // Delete the item from the cart
-  return await db.none('DELETE FROM "public"."carts" WHERE cart_id = $1', [cart_id]);
+    console.log(`Removing from cart: Cart ID = ${cart_id}`);
+    return await db.none('DELETE FROM "public"."carts" WHERE cart_id = $1', [cart_id]);
 }
-
 
 async function updateCartQuantity(cart_id, newQuantity) {
     console.log(`Updating cart quantity: Cart ID = ${cart_id}, New Quantity = ${newQuantity}`);
