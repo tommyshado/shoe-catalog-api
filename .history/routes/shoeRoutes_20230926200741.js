@@ -99,7 +99,8 @@ export default function shoeRoute(shoe_api, shoe_service) {
     async function updateCartQuantity(req, res) {
         try {
             await shoe_api.updateCartQuantity(req, res);
-            
+            console.log("Received update request:", req.body);
+
         } catch (err) {
             res.status(500).json({ error: err.message });
         }

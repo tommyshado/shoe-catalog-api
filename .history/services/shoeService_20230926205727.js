@@ -86,8 +86,15 @@ async function removeFromCart(cart_id) {
 
 
 async function updateCartQuantity(cart_id, newQuantity) {
+  console.log('Received cart_id:', cart_id, ' newQuantity:', newQuantity);
+  cart_id = parseInt(cart_id, 10);  
+  
+  const queryString = `UPDATE "public"."carts" SET quantity = $1 WHERE cart_id = $2 RETURNING quantity`;
+  console.log("Executing Query:", queryString, "With Values:", newQuantity, cart_id);
+  
   try {
-    const result = await db.oneOrNone('UPDATE "public"."carts" SET quantity = $1 WHERE cart_id = $2 RETURNING quantity', [newQuantity, cart_id]);
+    const result = await db.oneOrNone(queryString, [newQuantity, cart_id]);
+    console.log('Database now has quantity:', result ? result.quantity : 'Not found');
     return result;
   } catch (err) {
     console.error("Error updating cart: ", err);

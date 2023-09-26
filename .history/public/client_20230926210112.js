@@ -197,13 +197,10 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     
       const cartItems = await response.json();
-
-
     
       for (let item of cartItems.data) {
         if (!cart[item.shoe_id] || cart[item.shoe_id].quantity !== item.quantity) {
           cart[item.shoe_id] = {
-            cart_id: item.cart_id,
             id: item.shoe_id,
             name: item.name,
             size: item.size,
@@ -326,49 +323,45 @@ async function updateCartUI() {
 
 
 async function updateQuantity(cartItemId, change) {
-  console.log("Cart:", cart);
-  console.log("Cart Item ID:", cartItemId);
+  console.log(`Called updateQuantity with cartItemId: ${cartItemId} Change: ${change}`);
 
-  // Find the cart item with the matching cart_id
-  let cartItem = null;
-  for (const shoeId in cart) {
-    if (cart[shoeId].cart_id === parseInt(cartItemId, 10)) {
-      cartItem = cart[shoeId];
-      break;
-    }
-  }
-
-  if (cartItem) {
-    console.log("Found cart item:", cartItem);
-
-    // Update the quantity
-    const currentQuantity = cartItem.quantity;
-    const updatedQuantity = currentQuantity + change;
-
-    // Update the server
-    const response = await fetch(`/api/cart/updateQuantity`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ cart_id: cartItemId, newQuantity: updatedQuantity }),
-    });
-
-    // Handle the response if needed
-    if (response.ok) {
-      console.log("Successfully updated quantity on the server.");
-    } else {
-      console.error("Failed to update quantity on the server.");
-    }
-
-    // Re-fetch the cart items
-    await fetchCartItems();
-
-  } else {
+  const cartItem = cart[cartItemId];
+  
+  if (!cartItem) {
     console.error("Cart item not found for ID:", cartItemId);
-    // Fallback logic here
+    return;
   }
+
+ 
+
+  const currentQuantity = cartItem.quantity;
+
+
+
+  const updatedQuantity = currentQuantity + change;
+
+  const actualCartId = cartItemId;
+ 
+
+  // Update the cart object
+  cartItem.quantity = updatedQuantity;
+
+  // Now, update the server
+  const response = await fetch(`/api/cart/updateQuantity`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ cart_id: actualCartId, newQuantity: updatedQuantity }),
+    
+  });
+
+
+  // Re-fetch the cart items
+  await fetchCartItems();  
 }
+
+
 
 
 
@@ -376,19 +369,16 @@ async function updateQuantity(cartItemId, change) {
 
 document.querySelector(".cart_list").addEventListener("click", function(event) {
   if (event.target.classList.contains("increment")) {
-    const cartId = event.target.closest(".cart_item").getAttribute("data-cart-id");
-    console.log('Clicked Cart ID:', cartId);
-
-    updateQuantity(cartId, 1);
+    const cartItemId = event.target.closest(".cart_item").getAttribute("data-id");
+ 
+    updateQuantity(cartItemId, 1);
   }
-
 
   if (event.target.classList.contains("decrement")) {
-    const cartId = event.target.closest(".cart_item").getAttribute("data-cart-id");
-    console.log('Clicked Cart ID:', cartId);
-    updateQuantity(cartId, -1);
+    const cartItemId = event.target.closest(".cart_item").getAttribute("data-id");
+    console.log("Decrement clicked", cartItemId);
+    updateQuantity(cartItemId, -1);
   }
-  
 });
 
 

@@ -87,6 +87,7 @@ app.get("/api/shoes/filtered", shoe_route.getFiltered);
 // cart
 app.post("/api/cart/add", shoe_route.addToCart);
 app.delete("/api/cart/remove/:cart_id", shoe_route.removeFromCart);
+app.put("/api/cart/updateQuantity", shoe_route.updateCartQuantity);
 
 app.get("/api/cart/items/:user_id", shoe_route.getCartItems);
 app.get("/api/cart/count/:user_id", shoe_route.getCartItemCount);

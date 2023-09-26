@@ -190,36 +190,36 @@ document.addEventListener("DOMContentLoaded", function () {
       const userId = user;
     
       const response = await fetch(`/api/cart/items/${userId}`);
-    
+
+      
       if (!response.ok) {
         console.log(`Error fetching cart items: ${response.status} - ${response.statusText}`);
         return;
       }
-    
+      
       const cartItems = await response.json();
-
-
+      
+      console.log("Fetched cart items from server:", cartItems);
     
-      for (let item of cartItems.data) {
-        if (!cart[item.shoe_id] || cart[item.shoe_id].quantity !== item.quantity) {
-          cart[item.shoe_id] = {
-            cart_id: item.cart_id,
-            id: item.shoe_id,
-            name: item.name,
-            size: item.size,
-            quantity: item.quantity,
-            image_url: item.image_url,
-            price: item.price
-          };
-        }
-      }
-  
+      cart = cartItems.data.reduce((acc, item) => {
+        acc[item.shoe_id] = {
+          id: item.shoe_id,
+          name: item.name,
+          size: item.size,
+          quantity: item.quantity,
+          image_url: item.image_url,
+          price: item.price
+        };
+        return acc;
+      }, {});
+      
       updateCartUI();
     } catch (error) {
       console.error('An error occurred:', error);
     }
   }
   
+ 
 
   document.addEventListener("click", function (event) {
     if (event.target.classList.contains("add_shoe_button")) {
@@ -315,59 +315,47 @@ async function updateCartUI() {
     if (cartItemsContainer) {
       cartItemsContainer.innerHTML = generatedHTML;
     } else {
-      console.error("Cart items container not found");
+      console.error("Cart items container not found");  // Debugging line
     }
   } else {
-    console.error("Cart template not found");
+    console.error("Cart template not found");  // Debugging line
   }
- 
 }
 
 
-
 async function updateQuantity(cartItemId, change) {
-  console.log("Cart:", cart);
-  console.log("Cart Item ID:", cartItemId);
+  console.log("Called updateQuantity with cartItemId:", cartItemId, "Change:", change);
 
-  // Find the cart item with the matching cart_id
-  let cartItem = null;
-  for (const shoeId in cart) {
-    if (cart[shoeId].cart_id === parseInt(cartItemId, 10)) {
-      cartItem = cart[shoeId];
-      break;
-    }
+  const cartItem = cart[cartItemId];
+
+  if (!cartItem) {
+    console.error("Cart item not found for ID:", cartItemId);
+    return;
   }
 
-  if (cartItem) {
-    console.log("Found cart item:", cartItem);
+  console.log("Found cart item:", cartItem);
 
-    // Update the quantity
-    const currentQuantity = cartItem.quantity;
-    const updatedQuantity = currentQuantity + change;
+  const currentQuantity = cartItem.quantity;
+  console.log("Current quantity:", currentQuantity);
 
-    // Update the server
+  cartItem.quantity += change;
+  console.log("Updated quantity:", cartItem.quantity);
+
+  if (cartItem.quantity <= 0) {
+    await fetch(`/api/cart/remove/${cartItemId}`, { method: 'DELETE' });
+  } else {
     const response = await fetch(`/api/cart/updateQuantity`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ cart_id: cartItemId, newQuantity: updatedQuantity }),
+      body: JSON.stringify({ cart_id: cartItemId, newQuantity: cartItem.quantity })
     });
-
-    // Handle the response if needed
-    if (response.ok) {
-      console.log("Successfully updated quantity on the server.");
-    } else {
-      console.error("Failed to update quantity on the server.");
-    }
-
-    // Re-fetch the cart items
-    await fetchCartItems();
-
-  } else {
-    console.error("Cart item not found for ID:", cartItemId);
-    // Fallback logic here
+    console.log("Update response: ", response);
   }
+
+  await fetchCartItems();  // This should update 'cart' and call 'updateCartUI()'
+  console.log("Current cart:", cart);  // Debugging line: Check if 'cart' is updated
 }
 
 
@@ -376,19 +364,16 @@ async function updateQuantity(cartItemId, change) {
 
 document.querySelector(".cart_list").addEventListener("click", function(event) {
   if (event.target.classList.contains("increment")) {
-    const cartId = event.target.closest(".cart_item").getAttribute("data-cart-id");
-    console.log('Clicked Cart ID:', cartId);
-
-    updateQuantity(cartId, 1);
+    const cartItemId = event.target.closest(".cart_item").getAttribute("data-id");
+ 
+    updateQuantity(cartItemId, 1);
   }
-
 
   if (event.target.classList.contains("decrement")) {
-    const cartId = event.target.closest(".cart_item").getAttribute("data-cart-id");
-    console.log('Clicked Cart ID:', cartId);
-    updateQuantity(cartId, -1);
+    const cartItemId = event.target.closest(".cart_item").getAttribute("data-id");
+    console.log("Decrement clicked", cartItemId);
+    updateQuantity(cartItemId, -1);
   }
-  
 });
 
 

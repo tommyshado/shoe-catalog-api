@@ -85,13 +85,23 @@ async function removeFromCart(cart_id) {
 }
 
 
-async function updateCartQuantity(cart_id, newQuantity) {
+async function updateCartQuantity(req, res) {
+  const { cart_id, newQuantity } = req.body;
+  console.log('Received cart_id:', cart_id, ' newQuantity:', newQuantity);
+
   try {
     const result = await db.oneOrNone('UPDATE "public"."carts" SET quantity = $1 WHERE cart_id = $2 RETURNING quantity', [newQuantity, cart_id]);
-    return result;
+
+    if (result) {
+      console.log('Database now has quantity:', result.quantity);
+      res.status(200).json({ message: "Cart updated" });
+    } else {
+      console.log('Cart ID not found in database');
+      res.status(404).json({ message: "Cart ID not found" });
+    }
   } catch (err) {
     console.error("Error updating cart: ", err);
-    throw err;
+    res.status(500).json({ message: "Internal Server Error" });
   }
 }
 

@@ -95,16 +95,15 @@ export default function shoeAPI(shoeService) {
   }
 
   async function updateCartQuantity(req, res) {
-    try {
-      const { cart_id, newQuantity } = req.body;
-      await shoeService.updateCartQuantity(cart_id, newQuantity);
-      res.status(200).json({ message: "Cart updated" });
-    } catch (err) {
-      res.status(500).json({ error: err.message });
-    }
+      try {
+          const { cart_id, newQuantity } = req.body;
+          await shoeService.updateCartQuantity(cart_id, newQuantity);
+          console.log("Received update request:", req.body);
+          res.status(200).json({ message: "Cart updated" });
+      } catch (err) {
+          res.status(500).json({ error: err.message });
+      }
   }
-
-  
 
   async function getCartItems(req, res) {
       try {

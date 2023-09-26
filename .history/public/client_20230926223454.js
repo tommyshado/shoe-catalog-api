@@ -326,50 +326,39 @@ async function updateCartUI() {
 
 
 async function updateQuantity(cartItemId, change) {
-  console.log("Cart:", cart);
-  console.log("Cart Item ID:", cartItemId);
 
-  // Find the cart item with the matching cart_id
-  let cartItem = null;
-  for (const shoeId in cart) {
-    if (cart[shoeId].cart_id === parseInt(cartItemId, 10)) {
-      cartItem = cart[shoeId];
-      break;
-    }
-  }
-
-  if (cartItem) {
-    console.log("Found cart item:", cartItem);
-
-    // Update the quantity
-    const currentQuantity = cartItem.quantity;
-    const updatedQuantity = currentQuantity + change;
-
-    // Update the server
-    const response = await fetch(`/api/cart/updateQuantity`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ cart_id: cartItemId, newQuantity: updatedQuantity }),
-    });
-
-    // Handle the response if needed
-    if (response.ok) {
-      console.log("Successfully updated quantity on the server.");
-    } else {
-      console.error("Failed to update quantity on the server.");
-    }
-
-    // Re-fetch the cart items
-    await fetchCartItems();
-
-  } else {
+  const cartItem = cart[cartItemId];
+  console.log("Cart:", cart);  // Debug line
+  console.log("Cart Item ID:", cartItemId);  // Debug line
+  if (!cartItem) {
     console.error("Cart item not found for ID:", cartItemId);
-    // Fallback logic here
+    return;
   }
-}
 
+ 
+
+  const currentQuantity = cartItem.quantity;
+
+  const updatedQuantity = currentQuantity + change;
+
+  const actualCartId = cartItemId;
+ 
+
+
+  // Now, update the server
+  const response = await fetch(`/api/cart/updateQuantity`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ cart_id: actualCartId, newQuantity: updatedQuantity }),
+    
+  });
+
+
+  // Re-fetch the cart items
+  await fetchCartItems();  
+}
 
 
 
