@@ -191,14 +191,12 @@ document.addEventListener("DOMContentLoaded", function () {
       const cartItems = await response.json();
       
     
-      cart = cartItems.data.reduce((acc, item) => {
+      cart = cartItems.reduce((acc, item) => {
         acc[item.shoe_id] = {
           id: item.shoe_id,
           name: item.name,
           size: item.size,
-          quantity: item.quantity,
-          image_url: item.image_url,
-          price: item.price
+          quantity: item.quantity
         };
         return acc;
       }, {});
@@ -284,7 +282,10 @@ document.body.addEventListener("click", closeOnOutsideClick);
 // Initialize cart UI with items from the backend
 fetchCartItems();
 
+});
 
+
+// Client-side: Adding an item to cart
 async function addItemToCart(shoeId, quantity, userId) {
   try {
     const response = await fetch(`/api/cart/add`, {
@@ -292,7 +293,7 @@ async function addItemToCart(shoeId, quantity, userId) {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ shoe_id: shoeId, quantity: quantity, user_id: userId })  // <-- note the change here
+      body: JSON.stringify({ shoeId, quantity, userId })
     });
     if (response.ok) {
       await fetchCartItems();  // Update cart items from the server
@@ -301,6 +302,7 @@ async function addItemToCart(shoeId, quantity, userId) {
     console.error('Error adding item to cart:', err);
   }
 }
+
 
 
 async function removeItemFromCart(cartId) {
@@ -327,15 +329,6 @@ async function checkout(userId) {
     console.error('Error during checkout:', err);
   }
 }
-
-
-
-});
-
-
-// Client-side: Adding an item to cart
-
-
 
 
 

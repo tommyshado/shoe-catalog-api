@@ -356,8 +356,8 @@ p {
 .cart_modal {
   position: fixed;
   top: 0;
-  right: -500px;
-  width: 500px;
+  right: -400px;
+  width: 400px;
   height: 100%;
   background-color: white;
   overflow-y: auto;
@@ -416,11 +416,11 @@ justify-content: center;
 
 .item_name {
   color: black;
-  font-size: 1.2rem;
+  font-size: 0.9rem;
 }
 
 .cart_price {
-  font-size: 1.2rem;
+  font-size: 0.9rem;
   color: black;
 }
 

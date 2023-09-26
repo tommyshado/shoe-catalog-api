@@ -356,8 +356,8 @@ p {
 .cart_modal {
   position: fixed;
   top: 0;
-  right: -500px;
-  width: 500px;
+  right: -400px;
+  width: 400px;
   height: 100%;
   background-color: white;
   overflow-y: auto;
@@ -378,8 +378,8 @@ justify-content: center;
 .cart_item {
   list-style: none;
   display: flex;
-  margin-bottom: 2em;
-  margin-top: 2em;
+  margin-bottom: 1em;
+  margin-top: 1em;
   justify-content: space-around;
 }
 
@@ -404,7 +404,7 @@ justify-content: center;
 .increment, .decrement, .item_quantity {
   background-color: white;
   color: black;
-  border: solid rgb(208, 197, 197) 1px;
+  border: solid black 1px;
   padding: 0.5em;
   border-radius: 0;
 }
@@ -416,11 +416,11 @@ justify-content: center;
 
 .item_name {
   color: black;
-  font-size: 1.2rem;
+  font-size: 0.9rem;
 }
 
 .cart_price {
-  font-size: 1.2rem;
+  font-size: 0.9rem;
   color: black;
 }
 
@@ -433,7 +433,5 @@ ul {
 .cart_button_container {
   display: flex;
   justify-content: space-around;
-  width: 80px;
-  margin-top: 1em;
-  margin-left: 2em;
+  width: 50px;
 }

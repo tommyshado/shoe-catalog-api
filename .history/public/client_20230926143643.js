@@ -191,14 +191,12 @@ document.addEventListener("DOMContentLoaded", function () {
       const cartItems = await response.json();
       
     
-      cart = cartItems.data.reduce((acc, item) => {
+      cart = cartItems.reduce((acc, item) => {
         acc[item.shoe_id] = {
           id: item.shoe_id,
           name: item.name,
           size: item.size,
-          quantity: item.quantity,
-          image_url: item.image_url,
-          price: item.price
+          quantity: item.quantity
         };
         return acc;
       }, {});
@@ -226,28 +224,39 @@ document.addEventListener("DOMContentLoaded", function () {
   }
   
 
-  document.addEventListener("click", function (event) {
-    if (event.target.classList.contains("add_shoe_button")) {
-      const shoeId = event.target.getAttribute("data-id");
-      const userId = user; // Assuming 'user' is the variable where you store the user ID
-      const quantity = 1; // You're adding one item at a time
-  
-      fetch(`/api/shoes/${shoeId}`)
-        .then(response => {
-          if (response.ok) {
-            return response.json();
-          } else {
-            console.log(`Error fetching shoe data: ${response.status} - ${response.statusText}`);
-            throw new Error('Not a valid response');
-          }
-        })
-        .then(shoe => {
-          addItemToCart(shoeId, quantity, userId); // Add item to cart using server-side function
-        })
-        .catch(error => console.error('An error occurred:', error));
-    }
-  });
-  
+document.addEventListener("click", function (event) {
+  if (event.target.classList.contains("add_shoe_button")) {
+    const shoeId = event.target.getAttribute("data-id");
+    
+    // Debugging: Check if shoeId is captured correctly
+    console.log("Captured Shoe ID: ", shoeId);
+
+    fetch(`/api/shoes/${shoeId}`)
+      .then(response => {
+        console.log("Raw Shoe Response: ", response);
+        
+        if (response.ok) {
+          return response.json();
+        } else {
+          console.log(`Error fetching shoe data: ${response.status} - ${response.statusText}`);
+          throw new Error('Not a valid response');
+        }
+      })
+      .then(shoe => {
+        console.log("Fetched Shoe Data: ", shoe); // Debugging line to check the fetched data
+        cart[shoeId] = {
+          id: shoe.data.id,
+          name: shoe.data.name,
+          size: shoe.data.size,
+          quantity: 1
+        };
+        
+        updateCartUI();
+      })
+      .catch(error => console.error('An error occurred:', error));
+  }
+});
+
 
 document.addEventListener("click", function (event) {
   if (event.target.classList.contains("checkout_button")) {
@@ -284,7 +293,10 @@ document.body.addEventListener("click", closeOnOutsideClick);
 // Initialize cart UI with items from the backend
 fetchCartItems();
 
+});
 
+
+// Client-side: Adding an item to cart
 async function addItemToCart(shoeId, quantity, userId) {
   try {
     const response = await fetch(`/api/cart/add`, {
@@ -292,7 +304,7 @@ async function addItemToCart(shoeId, quantity, userId) {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ shoe_id: shoeId, quantity: quantity, user_id: userId })  // <-- note the change here
+      body: JSON.stringify({ shoeId, quantity, userId })
     });
     if (response.ok) {
       await fetchCartItems();  // Update cart items from the server
@@ -327,15 +339,6 @@ async function checkout(userId) {
     console.error('Error during checkout:', err);
   }
 }
-
-
-
-});
-
-
-// Client-side: Adding an item to cart
-
-
 
 
 

@@ -196,9 +196,7 @@ document.addEventListener("DOMContentLoaded", function () {
           id: item.shoe_id,
           name: item.name,
           size: item.size,
-          quantity: item.quantity,
-          image_url: item.image_url,
-          price: item.price
+          quantity: item.quantity
         };
         return acc;
       }, {});

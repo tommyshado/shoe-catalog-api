@@ -81,9 +81,7 @@ async function getCartItems(user_id) {
             carts.shoe_id,
             carts.quantity,
             shoes.name,
-            shoes.size,
-            shoes.image_url,
-            shoes.price
+            shoes.size
         FROM "public"."carts" 
         INNER JOIN "public"."shoes" ON carts.shoe_id = shoes.id
         WHERE carts.user_id = $1

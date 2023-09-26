@@ -89,18 +89,15 @@
             </div>
             <div class="info_cart">
                 <div>
-                  <p class="item_name">{{name}} </p>
+                  <span class="item_name">{{name}} </span>
                   <p class="item_name">Size: {{size}}</p>
                 </div>
-                <div class="cart_button_container">
-
-                  <button class="decrement">-</button>
-                  <span class="item_quantity">{{quantity}}</span>
-                  <button class="increment">+</button>
-                </div>
+                <button class="decrement">-</button>
+                <span class="item_quantity">{{quantity}}</span>
+                <button class="increment">+</button>
             </div>
             
-            <p class="cart_price">R{{price}}.00</p>
+            <p>R{{price}}</p>
           </li>
         {{/each}}
       </ul>

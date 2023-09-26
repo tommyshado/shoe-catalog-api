@@ -84,23 +84,16 @@
       <ul class="cart_list">
         {{#each cartItems}}
           <li class="cart_item" data-id="{{id}}">
-            <div class="cart_image">
-              <img src="{{image_url}}" alt="{{name}}" width="90px" />
+            <div>
+              <img src="{{image_url}}" alt="{{name}}" />
             </div>
-            <div class="info_cart">
-                <div>
-                  <p class="item_name">{{name}} </p>
-                  <p class="item_name">Size: {{size}}</p>
-                </div>
-                <div class="cart_button_container">
+            <div>
 
-                  <button class="decrement">-</button>
-                  <span class="item_quantity">{{quantity}}</span>
-                  <button class="increment">+</button>
-                </div>
+              <span class="item_name">{{name}} (Size: {{size}})</span>
             </div>
-            
-            <p class="cart_price">R{{price}}.00</p>
+            <button class="decrement">-</button>
+            <span class="item_quantity">{{quantity}}</span>
+            <button class="increment">+</button>
           </li>
         {{/each}}
       </ul>
@@ -132,7 +125,7 @@
         
           <div class="cart_container">
             <button class="cart_button"> <img src="../images/shopping-cart.png" class="cart_img" alt="" />
-           </button>
+            Cart</button>
           </div>
         </div>
       </div>

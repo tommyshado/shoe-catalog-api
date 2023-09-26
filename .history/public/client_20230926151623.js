@@ -191,14 +191,12 @@ document.addEventListener("DOMContentLoaded", function () {
       const cartItems = await response.json();
       
     
-      cart = cartItems.data.reduce((acc, item) => {
+      cart = cartItems.reduce((acc, item) => {
         acc[item.shoe_id] = {
           id: item.shoe_id,
           name: item.name,
           size: item.size,
-          quantity: item.quantity,
-          image_url: item.image_url,
-          price: item.price
+          quantity: item.quantity
         };
         return acc;
       }, {});

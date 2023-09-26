@@ -191,14 +191,12 @@ document.addEventListener("DOMContentLoaded", function () {
       const cartItems = await response.json();
       
     
-      cart = cartItems.data.reduce((acc, item) => {
+      cart = cartItems.reduce((acc, item) => {
         acc[item.shoe_id] = {
           id: item.shoe_id,
           name: item.name,
           size: item.size,
-          quantity: item.quantity,
-          image_url: item.image_url,
-          price: item.price
+          quantity: item.quantity
         };
         return acc;
       }, {});
@@ -286,13 +284,15 @@ fetchCartItems();
 
 
 async function addItemToCart(shoeId, quantity, userId) {
+  console.log(`Shoe ID: ${shoeId}, Quantity: ${quantity}, User ID: ${userId}`);
+
   try {
     const response = await fetch(`/api/cart/add`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ shoe_id: shoeId, quantity: quantity, user_id: userId })  // <-- note the change here
+      body: JSON.stringify({ shoeId, quantity, userId })
     });
     if (response.ok) {
       await fetchCartItems();  // Update cart items from the server
