@@ -24,7 +24,7 @@ header {
 }
 
 .logo_container {
-  margin-left: 20em;
+  margin-left: 6em;
 }
 
 .cart_img {
@@ -258,7 +258,7 @@ font-size: 1.1rem;
 
 p {
   margin: 5px 0; /* Add some vertical spacing around the p elements */
-  color: rgb(32, 30, 30);
+  color: rgb(108, 107, 107);
   font-size: 1.4rem;
 }
 

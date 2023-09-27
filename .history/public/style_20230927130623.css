@@ -23,10 +23,6 @@ header {
     width: 200px;
 }
 
-.logo_container {
-  margin-left: 20em;
-}
-
 .cart_img {
     width: 30px;
     height: 30px;
@@ -258,7 +254,7 @@ font-size: 1.1rem;
 
 p {
   margin: 5px 0; /* Add some vertical spacing around the p elements */
-  color: rgb(32, 30, 30);
+  color: rgb(108, 107, 107);
   font-size: 1.4rem;
 }
 
@@ -346,8 +342,8 @@ p {
 }
 
 .active-filter {
-  background-color: #f4eedd;
-  color: rgb(61, 57, 57);
+  background-color: #ddcb95;
+  color: white;
 }
 
 .cart_button {

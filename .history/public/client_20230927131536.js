@@ -351,11 +351,16 @@ async function updateQuantity(cartItemId, change) {
 
   // Debugging: Check if the cart item was found.
   if (cartItem) {
+    console.log("Cart Item Found:", cartItem);
 
     const currentQuantity = cartItem.quantity;
     const updatedQuantity = currentQuantity + change;
 
+    // Debugging: Log the updated quantity.
+
+
     if (updatedQuantity <= 0) {
+      // Debugging: Item will be removed.
       
 
       const res = await fetch(`/api/cart/remove/${cartItemId}`, {
@@ -460,33 +465,24 @@ document.querySelector(".cart_list").addEventListener("click", async function(ev
 
 
 document.getElementById('checkoutButton').addEventListener('click', async function() {
-  // Show a confirmation dialog
-  const isConfirmed = window.confirm("Are you sure you want to proceed with the checkout?");
+  try {
+    const userId = user;  // Assuming 'user' contains the user ID
+    const response = await fetch(`/api/cart/checkout/${userId}`, {
+      method: 'POST'
+    });
 
-  // If the user confirms, proceed with the checkout process
-  if (isConfirmed) {
-    try {
-      const userId = user;  // Assuming 'user' contains the user ID
-      const response = await fetch(`/api/cart/checkout/${userId}`, {
-        method: 'POST'
-      });
-
-      if (response.ok) {
-        console.log('Checkout successful');
-        cart = {};  // Clear the client-side cart object
-        updateCartUI();  // Update the UI
-        updateTotalPrice();  // Update the total price
-      } else {
-        console.error(`Failed to checkout: ${response.status} - ${response.statusText}`);
-      }
-    } catch (error) {
-      console.error('An error occurred:', error);
+    if (response.ok) {
+      console.log('Checkout successful');
+      cart = {};  // Clear the client-side cart object
+      updateCartUI();  // Update the UI
+      updateTotalPrice();  // Update the total price
+    } else {
+      console.error(`Failed to checkout: ${response.status} - ${response.statusText}`);
     }
-  } else {
-    console.log("Checkout cancelled by the user.");
+  } catch (error) {
+    console.error('An error occurred:', error);
   }
 });
-
 
 
 
