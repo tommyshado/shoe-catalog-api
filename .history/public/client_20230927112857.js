@@ -329,13 +329,11 @@ async function updateCartUI() {
 
 
 
+
 async function updateQuantity(cartItemId, change) {
-  // Debugging logs for tracing.
 
-
+  // Find the cart item with the matching cart_id
   let cartItem = null;
-
-  // Find the cart item with the matching cart_id.
   for (const shoeId in cart) {
     if (cart[shoeId].cart_id === parseInt(cartItemId, 10)) {
       cartItem = cart[shoeId];
@@ -343,70 +341,37 @@ async function updateQuantity(cartItemId, change) {
     }
   }
 
-  // Debugging: Check if the cart item was found.
   if (cartItem) {
-    console.log("Cart Item Found:", cartItem);
-
+    // Update the quantity
     const currentQuantity = cartItem.quantity;
     const updatedQuantity = currentQuantity + change;
 
-    // Debugging: Log the updated quantity.
+    // Update the server
+    const response = await fetch(`/api/cart/updateQuantity`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ cart_id: cartItemId, newQuantity: updatedQuantity }),
+    });
 
-
-    if (updatedQuantity <= 0) {
-      // Debugging: Item will be removed.
-      
-
-      const res = await fetch(`/api/cart/remove/${cartItemId}`, {
-        method: 'DELETE'
-      });
-
-      // Check if the server-side removal was successful.
-      if (res.ok) {
-        console.log(`Successfully removed cart item with ID ${cartItemId}`);
-      } else {
-        console.log('Failed to remove cart item');
-      }
-
-      // Remove from the client-side cart.
-      delete cart[cartItem.id];
-
-      // Fetch the updated list of shoes.
-      await fetchShoes();
+    // Handle the response if needed
+    if (response.ok) {
+      console.log("Successfully updated quantity on the server.");
     } else {
-      // Update the server-side cart.
-      const response = await fetch(`/api/cart/updateQuantity`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ cart_id: cartItemId, newQuantity: updatedQuantity }),
-      });
-
-      // Debugging: Log the server response.
-      if (response.ok) {
-        console.log("Successfully updated quantity on the server.");
-      } else {
-        console.error("Failed to update quantity on the server.");
-      }
-
-      // Update the client-side cart.
-      await fetchCartItems();
+      console.error("Failed to update quantity on the server.");
     }
 
-    // Update the total price.
+    // Re-fetch the cart items
+    await fetchCartItems();
+
     updateTotalPrice();
 
-    // Return the updated quantity for further handling.
-    return updatedQuantity;
-
   } else {
-    // Debugging: Log that the cart item was not found.
     console.error("Cart item not found for ID:", cartItemId);
-    return null;  // Indicate that the cart item was not found.
+    // Fallback logic here
   }
 }
-
 
 function updateTotalPrice() {
   let totalPrice = 0;

@@ -232,24 +232,19 @@ input {
   max-width: 100%; /* Make sure the image doesn't exceed the box size */
 }
 
-.shoe_item_container h3 {
+h3 {
   margin: 20px 0; /* Add some vertical spacing around the h3 elements */
-  color: rgb(49, 47, 47);
-  font-weight: 400;
-font-size: 1.1rem;
+  color: rgb(68, 66, 66);
+font-size: 0.9rem;
 }
 
 .shoe_name {
-  font-size: 1.9rem;
+  font-size: 1.1rem;
 }
 
 .shoe_description {
   font-size: 1rem;
   color: rgb(50, 49, 49);
-}
-
-.shoe_price {
-  font-size: 0.9rem;
 }
 
 p {
@@ -262,7 +257,7 @@ p {
   background-color: rgb(255, 255, 255);
   margin-top: 20px;
   font-size: 0.8rem;
-
+  font-weight: bold;
   color: black;
   border: 1px solid black;
 }
@@ -338,7 +333,7 @@ p {
   top: 280px;
   left: 50%;
   transform: translate(-50%, -50%);
-  z-index: 2;
+  z-index: 999;
 }
 
 .active-filter {
@@ -377,7 +372,7 @@ p {
   background-color: white;
   overflow-y: auto;
   transition: right 0.3s ease;
-  z-index: 3;
+  z-index: 2;
 }
 
 .cart_modal.show {

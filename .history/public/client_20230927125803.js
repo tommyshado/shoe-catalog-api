@@ -331,7 +331,9 @@ async function updateCartUI() {
 
 async function updateQuantity(cartItemId, change) {
   // Debugging logs for tracing.
-
+  console.log("Received Cart ID:", cartItemId);
+  console.log("Change:", change);
+  console.log("Current Cart:", cart);
 
   let cartItem = null;
 
@@ -351,11 +353,11 @@ async function updateQuantity(cartItemId, change) {
     const updatedQuantity = currentQuantity + change;
 
     // Debugging: Log the updated quantity.
-
+    console.log("Updated Quantity:", updatedQuantity);
 
     if (updatedQuantity <= 0) {
       // Debugging: Item will be removed.
-      
+      console.log("Removing item as updated quantity is <= 0");
 
       const res = await fetch(`/api/cart/remove/${cartItemId}`, {
         method: 'DELETE'

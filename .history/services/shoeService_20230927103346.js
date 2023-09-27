@@ -129,9 +129,9 @@ async function checkout(user_id) {
     // Fetch all cart items for the user
     const cartItems = await t.any('SELECT * FROM "public"."carts" WHERE user_id = $1', [user_id]);
 
-    // Update the in_stock for each cart item
+    // Update the stock for each cart item
     for (const item of cartItems) {
-      await t.none('UPDATE "public"."shoes" SET in_stock = in_stock - $1 WHERE id = $2', [item.quantity, item.shoe_id]);
+      await t.none('UPDATE "public"."shoes" SET stock = stock - $1 WHERE id = $2', [item.quantity, item.shoe_id]);
     }
 
     // Delete all cart items for the user

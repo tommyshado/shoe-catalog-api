@@ -330,12 +330,14 @@ async function updateCartUI() {
 
 
 async function updateQuantity(cartItemId, change) {
-  // Debugging logs for tracing.
-
+  // Debugging: Log the input parameters and the entire cart object.
+  console.log("Received Cart ID:", cartItemId);
+  console.log("Change:", change);
+  console.log("Current Cart:", cart);
 
   let cartItem = null;
-
-  // Find the cart item with the matching cart_id.
+  
+  // Find the cart item with the matching cart_id
   for (const shoeId in cart) {
     if (cart[shoeId].cart_id === parseInt(cartItemId, 10)) {
       cartItem = cart[shoeId];
@@ -343,38 +345,31 @@ async function updateQuantity(cartItemId, change) {
     }
   }
 
-  // Debugging: Check if the cart item was found.
+  // Debugging: Log whether or not the cart item was found.
   if (cartItem) {
     console.log("Cart Item Found:", cartItem);
-
+    
     const currentQuantity = cartItem.quantity;
     const updatedQuantity = currentQuantity + change;
 
     // Debugging: Log the updated quantity.
-
+    console.log("Updated Quantity:", updatedQuantity);
 
     if (updatedQuantity <= 0) {
-      // Debugging: Item will be removed.
-      
+      // Debugging: Log that the item will be removed.
+      console.log("Removing item as updated quantity is <= 0");
 
-      const res = await fetch(`/api/cart/remove/${cartItemId}`, {
+      await fetch(`/api/cart/remove/${cartItemId}`, {
         method: 'DELETE'
       });
 
-      // Check if the server-side removal was successful.
-      if (res.ok) {
-        console.log(`Successfully removed cart item with ID ${cartItemId}`);
-      } else {
-        console.log('Failed to remove cart item');
-      }
-
-      // Remove from the client-side cart.
+      // Remove from the client-side cart
       delete cart[cartItem.id];
 
-      // Fetch the updated list of shoes.
+      // Fetch updated list of shoes
       await fetchShoes();
     } else {
-      // Update the server-side cart.
+      // Make the API call to update the quantity in the cart
       const response = await fetch(`/api/cart/updateQuantity`, {
         method: 'PUT',
         headers: {
@@ -390,20 +385,17 @@ async function updateQuantity(cartItemId, change) {
         console.error("Failed to update quantity on the server.");
       }
 
-      // Update the client-side cart.
+      // Re-fetch the cart items to update UI
       await fetchCartItems();
     }
 
-    // Update the total price.
+    // Update the total price
     updateTotalPrice();
 
-    // Return the updated quantity for further handling.
     return updatedQuantity;
-
   } else {
     // Debugging: Log that the cart item was not found.
     console.error("Cart item not found for ID:", cartItemId);
-    return null;  // Indicate that the cart item was not found.
   }
 }
 

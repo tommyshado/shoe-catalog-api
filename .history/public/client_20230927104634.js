@@ -220,37 +220,33 @@ document.addEventListener("DOMContentLoaded", function () {
 
   
 
-  document.addEventListener("click", function (event) {
+  document.addEventListener("click", async function (event) {
     if (event.target.classList.contains("add_shoe_button")) {
       const shoeId = event.target.getAttribute("data-id");
       const userId = user; // Assuming 'user' is the variable where you store the user ID
   
-      // Check if the item is already in the cart
-      if (cart[shoeId]) {
-        // If it is, update the quantity
-        updateQuantity(cart[shoeId].cart_id, 1);
+      // Check if item is already in the client-side cart
+      if (!clientCart[shoeId]) {
+        try {
+          const response = await fetch(`/api/shoes/${shoeId}`);
+          if (response.ok) {
+            const shoe = await response.json();
+            await addItemToCart(shoeId, 1, userId); // Add to server-side cart and decrease stock
+            clientCart[shoeId] = 1; // Add to client-side cart
+          } else {
+            console.log(`Error fetching shoe data: ${response.status} - ${response.statusText}`);
+          }
+        } catch (error) {
+          console.error('An error occurred:', error);
+        }
       } else {
-        // If it's not, add it to the cart
-        fetch(`/api/shoes/${shoeId}`)
-          .then(response => {
-            if (response.ok) {
-              return response.json();
-            } else {
-              console.log(`Error fetching shoe data: ${response.status} - ${response.statusText}`);
-              throw new Error('Not a valid response');
-            }
-          })
-          .then(shoe => {
-            return addItemToCart(shoeId, 1, userId);  // Wait for this to complete
-          })
-          .then(() => {
-            fetchShoes();  // Now re-fetch the list of shoes
-          })
-          .catch(error => console.error('An error occurred:', error));
+        // Item is already in the cart; do not decrease stock but you may increase quantity in the cart if you like
+        console.log("Item is already in the cart.");
       }
+  
+      await fetchShoes(); // Re-fetch the list of shoes to update UI
     }
   });
-  
   
   
 
@@ -308,8 +304,9 @@ async function addItemToCart(shoeId, quantity, userId) {
 }
 
 async function updateCartUI() {
-  // Filter out items with zero or negative quantity
-  let cartItems = Object.values(cart).filter(item => item.quantity > 0);
+
+
+  let cartItems = Object.values(cart);
 
   let cartTemplate = document.querySelector("#cartTemplate");
   if (cartTemplate) {
@@ -325,17 +322,16 @@ async function updateCartUI() {
   } else {
     console.error("Cart template not found");
   }
+ 
 }
 
 
 
 async function updateQuantity(cartItemId, change) {
-  // Debugging logs for tracing.
 
 
+  // Find the cart item with the matching cart_id
   let cartItem = null;
-
-  // Find the cart item with the matching cart_id.
   for (const shoeId in cart) {
     if (cart[shoeId].cart_id === parseInt(cartItemId, 10)) {
       cartItem = cart[shoeId];
@@ -343,70 +339,39 @@ async function updateQuantity(cartItemId, change) {
     }
   }
 
-  // Debugging: Check if the cart item was found.
   if (cartItem) {
-    console.log("Cart Item Found:", cartItem);
+    
 
+    // Update the quantity
     const currentQuantity = cartItem.quantity;
     const updatedQuantity = currentQuantity + change;
 
-    // Debugging: Log the updated quantity.
+    // Update the server
+    const response = await fetch(`/api/cart/updateQuantity`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ cart_id: cartItemId, newQuantity: updatedQuantity }),
+    });
 
-
-    if (updatedQuantity <= 0) {
-      // Debugging: Item will be removed.
-      
-
-      const res = await fetch(`/api/cart/remove/${cartItemId}`, {
-        method: 'DELETE'
-      });
-
-      // Check if the server-side removal was successful.
-      if (res.ok) {
-        console.log(`Successfully removed cart item with ID ${cartItemId}`);
-      } else {
-        console.log('Failed to remove cart item');
-      }
-
-      // Remove from the client-side cart.
-      delete cart[cartItem.id];
-
-      // Fetch the updated list of shoes.
-      await fetchShoes();
+    // Handle the response if needed
+    if (response.ok) {
+      console.log("Successfully updated quantity on the server.");
     } else {
-      // Update the server-side cart.
-      const response = await fetch(`/api/cart/updateQuantity`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ cart_id: cartItemId, newQuantity: updatedQuantity }),
-      });
-
-      // Debugging: Log the server response.
-      if (response.ok) {
-        console.log("Successfully updated quantity on the server.");
-      } else {
-        console.error("Failed to update quantity on the server.");
-      }
-
-      // Update the client-side cart.
-      await fetchCartItems();
+      console.error("Failed to update quantity on the server.");
     }
 
-    // Update the total price.
+    // Re-fetch the cart items
+    await fetchCartItems();
+
     updateTotalPrice();
 
-    // Return the updated quantity for further handling.
-    return updatedQuantity;
-
   } else {
-    // Debugging: Log that the cart item was not found.
     console.error("Cart item not found for ID:", cartItemId);
-    return null;  // Indicate that the cart item was not found.
+    // Fallback logic here
   }
 }
-
 
 function updateTotalPrice() {
   let totalPrice = 0;
@@ -418,44 +383,26 @@ function updateTotalPrice() {
 
 
 
-document.querySelector(".cart_list").addEventListener("click", async function(event) {
+
+
+document.querySelector(".cart_list").addEventListener("click", function(event) {
   if (event.target.classList.contains("increment")) {
     const cartId = event.target.closest(".cart_item").getAttribute("data-cart-id");
-    await updateQuantity(cartId, 1);
+    console.log('Clicked Cart ID:', cartId);
+
+    updateQuantity(cartId, 1);
   }
+
+ 
 
   if (event.target.classList.contains("decrement")) {
     const cartId = event.target.closest(".cart_item").getAttribute("data-cart-id");
-    const shoeId = event.target.closest(".cart_item").getAttribute("data-id");
-
-    // Get the updated quantity
-    const updatedQuantity = await updateQuantity(cartId, -1); 
-
-    console.log(`Updated Quantity for Cart ID ${cartId}: ${updatedQuantity}`);
-
-    if (updatedQuantity <= 0) {
-      // Remove item from cart
-      const res = await fetch(`/api/cart/remove/${cartId}`, {
-        method: 'DELETE'
-      });
-      if (res.ok) {
-        console.log(`Successfully removed cart item with ID ${cartId}`);
-        // Update client-side cart
-        delete clientCart[shoeId];
-      } else {
-        console.log('Failed to remove cart item');
-      }
-
-      // Update shoes and cart items
-      await fetchShoes();
-      await fetchCartItems();
-    }
+    console.log('Clicked Cart ID:', cartId);
+    updateQuantity(cartId, -1);
   }
-
-  updateTotalPrice(); // Assuming this is not async
+  
+  updateTotalPrice();
 });
-
-
 
 
 document.getElementById('checkoutButton').addEventListener('click', async function() {
@@ -480,6 +427,32 @@ document.getElementById('checkoutButton').addEventListener('click', async functi
 
 
 
+
+async function removeItemFromCart(cartId) {
+  try {
+    const response = await fetch(`/api/cart/remove/${cartId}`, { method: 'DELETE' });
+    if (response.ok) {
+      await fetchCartItems();  // Update cart items from the server
+    }
+  } catch (err) {
+    console.error('Error removing item from cart:', err);
+  }
+}
+
+
+// Client-side: Checkout
+async function checkout(userId) {
+  try {
+    const response = await fetch(`/api/cart/checkout/${userId}`, { method: 'POST' });
+    if (response.ok) {
+      cart = {};  // Clear local cart
+      updateCartUI();  // Update UI
+    }
+  } catch (err) {
+    console.error('Error during checkout:', err);
+  }
+}
+// Client-side: Adding an item to cart
 });
 
 

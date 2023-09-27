@@ -331,7 +331,9 @@ async function updateCartUI() {
 
 async function updateQuantity(cartItemId, change) {
   // Debugging logs for tracing.
-
+  console.log("Received Cart ID:", cartItemId);
+  console.log("Change:", change);
+  console.log("Current Cart:", cart);
 
   let cartItem = null;
 

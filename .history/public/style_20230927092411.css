@@ -236,7 +236,7 @@ input {
   margin: 20px 0; /* Add some vertical spacing around the h3 elements */
   color: rgb(49, 47, 47);
   font-weight: 400;
-font-size: 1.1rem;
+font-size: 1.2rem;
 }
 
 .shoe_name {
@@ -262,7 +262,7 @@ p {
   background-color: rgb(255, 255, 255);
   margin-top: 20px;
   font-size: 0.8rem;
-
+  font-weight: bold;
   color: black;
   border: 1px solid black;
 }

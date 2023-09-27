@@ -153,6 +153,7 @@ export default function shoeAPI(shoeService) {
 
 
 async function getShoeById(req, res) {
+  console.log('Inside api.getShoeById');  // Debug line
   try {
     const { shoe_id } = req.params; // Make sure this line works
     console.log(`Calling service with shoe_id: ${shoe_id}`);

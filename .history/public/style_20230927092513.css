@@ -262,7 +262,7 @@ p {
   background-color: rgb(255, 255, 255);
   margin-top: 20px;
   font-size: 0.8rem;
-
+  font-weight: bold;
   color: black;
   border: 1px solid black;
 }

@@ -240,7 +240,7 @@ font-size: 1.1rem;
 }
 
 .shoe_name {
-  font-size: 1.9rem;
+  font-size: 1.6rem;
 }
 
 .shoe_description {
@@ -262,7 +262,7 @@ p {
   background-color: rgb(255, 255, 255);
   margin-top: 20px;
   font-size: 0.8rem;
-
+  font-weight: bold;
   color: black;
   border: 1px solid black;
 }
@@ -338,7 +338,7 @@ p {
   top: 280px;
   left: 50%;
   transform: translate(-50%, -50%);
-  z-index: 2;
+  z-index: 999;
 }
 
 .active-filter {
@@ -377,7 +377,7 @@ p {
   background-color: white;
   overflow-y: auto;
   transition: right 0.3s ease;
-  z-index: 3;
+  z-index: 2;
 }
 
 .cart_modal.show {
