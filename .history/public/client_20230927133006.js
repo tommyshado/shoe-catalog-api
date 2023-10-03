@@ -224,22 +224,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
   let clientCart = {};
 
-  function showPopupMessage(message) {
-    alert(message);  // Using a simple alert for demonstration, you can use a fancier UI
-  }
-  
   
 
   document.addEventListener("click", function (event) {
     if (event.target.classList.contains("add_shoe_button")) {
-      if (!user) {
-        showPopupMessage("You cannot add to the cart until you are logged in.");
-        return;  // Exit the function
-      }
-  
       const shoeId = event.target.getAttribute("data-id");
       const userId = user; // Assuming 'user' is the variable where you store the user ID
-      
+  
       // Check if the item is already in the cart
       if (cart[shoeId]) {
         // If it is, update the quantity
