@@ -100,7 +100,7 @@ async function removeFromCart(cart_id) {
     }
 
     // Increase the stock back to the shoes table.
-    await db.none(`UPDATE "public"."shoes" SET in_stock = in_stock + $1 WHERE id = $2`, [cartItem.quantity, cartItem.shoe_id]);
+    await updateShoeStock(cartItem.shoe_id, cartItem.available_stock + cartItem.quantity);
 
     // Remove item from cart.
     await db.none('DELETE FROM "public"."carts" WHERE cart_id = $1', [cart_id]);
@@ -112,7 +112,6 @@ async function removeFromCart(cart_id) {
     return { status: 'error', message: 'Failed to remove item from cart' };
   }
 }
-
 
 
 async function updateShoeStock(shoe_id, newStock) {

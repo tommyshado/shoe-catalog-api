@@ -92,28 +92,25 @@ export default function shoesService(db) {
 
 async function removeFromCart(cart_id) {
   try {
+    
     const cartItem = await db.oneOrNone('SELECT * FROM "public"."carts" WHERE cart_id = $1', [cart_id]);
     
     if (!cartItem) {
-      console.log(`No cart item found for cart_id: ${cart_id}`);
+      
       return { status: 'error', message: 'No cart item found' };
     }
 
-    // Increase the stock back to the shoes table.
-    await db.none(`UPDATE "public"."shoes" SET in_stock = in_stock + $1 WHERE id = $2`, [cartItem.quantity, cartItem.shoe_id]);
-
-    // Remove item from cart.
+    // Add your logic here to actually remove the item.
     await db.none('DELETE FROM "public"."carts" WHERE cart_id = $1', [cart_id]);
-    console.log(`Successfully removed cart item with ID: ${cart_id}`);
+    
 
     return { status: 'success', message: 'Item removed' };
+
   } catch (err) {
     console.error('Error in removeFromCart:', err);
     return { status: 'error', message: 'Failed to remove item from cart' };
   }
 }
-
-
 
 async function updateShoeStock(shoe_id, newStock) {
   try {
