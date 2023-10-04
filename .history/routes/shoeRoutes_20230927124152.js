@@ -142,7 +142,7 @@ export default function shoeRoute(shoe_api, shoe_service) {
 
 async function getShoeById(req, res) {
     try {
-    
+        console.log('Inside route.getShoeById')
 
         const { shoe_id } = req.params;
        const shoe = await shoe_service.getShoeById(req.params.shoe_id);

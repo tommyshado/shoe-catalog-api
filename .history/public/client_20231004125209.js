@@ -555,7 +555,7 @@ document.addEventListener("DOMContentLoaded", async function() {
 
 // This should be part of your login success handler
 function onLoginSuccess(username) {
-  document.getElementById('usernameDisplay').textContent = "Welcome " + username ;
+  document.getElementById('usernameDisplay').textContent = username;
 }
 
 function onLogout() {

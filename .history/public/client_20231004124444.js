@@ -529,35 +529,46 @@ document.getElementById('checkoutButton').addEventListener('click', async functi
 
 
 document.addEventListener("DOMContentLoaded", async function() {
-  const res = await fetch('/api/check-session');
-  const data = await res.json();
+    const res = await fetch('/api/check-session');
+  
+    const data = await res.json();
+    
+    const loginButton = document.getElementById('loginButton');
+    const logoutButton = document.getElementById('logoutButton'); // Assuming you have added this button in your HTML
+  
+    // Toggle display of login and logout buttons based on session status
+    if (data.loggedIn) {
+      loginButton.style.display = 'none';
+      logoutButton.style.display = 'block';
+    } else {
+      loginButton.style.display = 'block';
+      logoutButton.style.display = 'none';
+    }
+  
+    // Attach click event to logout button
+    if (logoutButton) {
+      logoutButton.addEventListener("click", () => {
+        window.location.href = "/logout";
+      });
+    }
 
-  const loginButton = document.getElementById('loginButton');
-  const logoutButton = document.getElementById('logoutButton');
 
-  if (data.loggedIn) {
-    loginButton.style.display = 'none';
-    logoutButton.style.display = 'block';
-    onLoginSuccess(data.username);  // Update the UI with the username
-  } else {
-    loginButton.style.display = 'block';
-    logoutButton.style.display = 'none';
-    onLogout();
+
+    // This should be part of your login success handler
+
+
+
+  });
+
+
+  function onLoginSuccess(username) {
+    document.getElementById('usernameDisplay').textContent = username;
+    document.getElementById('loginButton').style.display = 'none';
+    document.getElementById('logoutButton').style.display = 'block';
   }
-
-  if (logoutButton) {
-    logoutButton.addEventListener("click", () => {
-      window.location.href = "/logout";
-      onLogout();
-    });
+  
+  function onLogout() {
+    document.getElementById('usernameDisplay').textContent = 'Name here';
+    document.getElementById('loginButton').style.display = 'block';
+    document.getElementById('logoutButton').style.display = 'none';
   }
-});
-
-// This should be part of your login success handler
-function onLoginSuccess(username) {
-  document.getElementById('usernameDisplay').textContent = "Welcome " + username ;
-}
-
-function onLogout() {
-  document.getElementById('usernameDisplay').textContent = '';
-}

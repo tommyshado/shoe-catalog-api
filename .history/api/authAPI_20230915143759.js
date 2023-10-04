@@ -3,15 +3,15 @@
 
 export default function AuthApi(app) {
 
-  function checkSession() {
-    app.get('/api/check-session', (req, res) => {
-        if (req.session && req.session.username) {
-            res.json({ loggedIn: true, username: req.session.username });
-        } else {
-            res.json({ loggedIn: false });
-        }
-    });
-}
+    function checkSession() {
+        app.get('/api/check-session', (req, res) => {
+            if (req.session && req.session.username) {
+              res.json({ loggedIn: true });
+            } else {
+              res.json({ loggedIn: false });
+            }
+          });
+    }
 
     function addLogoutRoute() {
         app.get('/api/logout', (req, res) => {

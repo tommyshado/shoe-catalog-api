@@ -90,22 +90,20 @@ export default function shoesService(db) {
 }
 
 
+
 async function removeFromCart(cart_id) {
   try {
+    console.log(`Removing from cart: Cart ID = ${cart_id}`);
     
-    const cartItem = await db.oneOrNone('SELECT * FROM "public"."carts" WHERE cart_id = $1', [cart_id]);
+    const cartItem = await db.one('SELECT * FROM "public"."carts" WHERE cart_id = $1', [cart_id]);
     
-    if (!cartItem) {
-      
-      return { status: 'error', message: 'No cart item found' };
-    }
-
-    // Add your logic here to actually remove the item.
+    // Update the stock in the shoes table
+    await db.none('UPDATE "public"."shoes" SET in_stock = in_stock + $1 WHERE id = $2', [cartItem.quantity, cartItem.shoe_id]);
+    
+    // Delete the item from the cart
     await db.none('DELETE FROM "public"."carts" WHERE cart_id = $1', [cart_id]);
     
-
-    return { status: 'success', message: 'Item removed' };
-
+    return { status: 'success', message: 'Item removed from cart' };
   } catch (err) {
     console.error('Error in removeFromCart:', err);
     return { status: 'error', message: 'Failed to remove item from cart' };
@@ -175,7 +173,7 @@ async function getCartItemById(cart_id) {
 }
 
 async function getShoeById(shoeId) {
-
+  console.log('Inside service.getShoeById');
   try {
     return await db.oneOrNone('SELECT * FROM "public"."shoes" WHERE id = $1', [shoeId]);
   } catch (err) {

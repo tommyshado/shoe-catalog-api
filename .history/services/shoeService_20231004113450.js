@@ -92,17 +92,17 @@ export default function shoesService(db) {
 
 async function removeFromCart(cart_id) {
   try {
-    
+    console.log(`Attempting to remove cart item with ID: ${cart_id}`);
     const cartItem = await db.oneOrNone('SELECT * FROM "public"."carts" WHERE cart_id = $1', [cart_id]);
     
     if (!cartItem) {
-      
+      console.log(`No cart item found for cart_id: ${cart_id}`);
       return { status: 'error', message: 'No cart item found' };
     }
 
     // Add your logic here to actually remove the item.
     await db.none('DELETE FROM "public"."carts" WHERE cart_id = $1', [cart_id]);
-    
+    console.log(`Successfully removed cart item with ID: ${cart_id}`);
 
     return { status: 'success', message: 'Item removed' };
 

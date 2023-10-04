@@ -210,14 +210,14 @@ document.addEventListener("DOMContentLoaded", function () {
      
   
       for (let item of cartItems.data) {
-        const stockResponse = await fetch(`/api/shoes/${item.shoe_id}`);
+        const stockResponse = await fetch(`/api/shoes/${item.shoe_id}/stock`);
   
         // Check if the stockResponse is ok
         if (stockResponse.ok) {
           const stockData = await stockResponse.json();
   
           // Debugging: Log the stock data
-        
+          console.log("Stock data:", stockData);
   
           const available_stock = stockData.in_stock;  // assuming the stock number is in `in_stock` field
           
@@ -393,21 +393,25 @@ async function updateQuantity(cartItemId, change) {
     }
 
     if (updatedQuantity <= 0) {
+      
+
       const res = await fetch(`/api/cart/remove/${cartItemId}`, {
         method: 'DELETE'
       });
-    
+
       // Check if the server-side removal was successful.
       if (res.ok) {
         console.log(`Successfully removed cart item with ID ${cartItemId}`);
-        delete cart[cartItem.id];  // Remove from client-side cart
-        await fetchCartItems();    // Refresh cart items from the server
-        updateCartUI();            // Update the UI to reflect the changes
       } else {
         console.log('Failed to remove cart item');
       }
-    }
-     else {
+
+      // Remove from the client-side cart.
+      delete cart[cartItem.id];
+
+      // Fetch the updated list of shoes.
+      await fetchShoes();
+    } else {
       // Update the server-side cart.
       const response = await fetch(`/api/cart/updateQuantity`, {
         method: 'PUT',
@@ -529,35 +533,26 @@ document.getElementById('checkoutButton').addEventListener('click', async functi
 
 
 document.addEventListener("DOMContentLoaded", async function() {
-  const res = await fetch('/api/check-session');
-  const data = await res.json();
-
-  const loginButton = document.getElementById('loginButton');
-  const logoutButton = document.getElementById('logoutButton');
-
-  if (data.loggedIn) {
-    loginButton.style.display = 'none';
-    logoutButton.style.display = 'block';
-    onLoginSuccess(data.username);  // Update the UI with the username
-  } else {
-    loginButton.style.display = 'block';
-    logoutButton.style.display = 'none';
-    onLogout();
-  }
-
-  if (logoutButton) {
-    logoutButton.addEventListener("click", () => {
-      window.location.href = "/logout";
-      onLogout();
-    });
-  }
-});
-
-// This should be part of your login success handler
-function onLoginSuccess(username) {
-  document.getElementById('usernameDisplay').textContent = "Welcome " + username ;
-}
-
-function onLogout() {
-  document.getElementById('usernameDisplay').textContent = '';
-}
+    const res = await fetch('/api/check-session');
+  
+    const data = await res.json();
+    
+    const loginButton = document.getElementById('loginButton');
+    const logoutButton = document.getElementById('logoutButton'); // Assuming you have added this button in your HTML
+  
+    // Toggle display of login and logout buttons based on session status
+    if (data.loggedIn) {
+      loginButton.style.display = 'none';
+      logoutButton.style.display = 'block';
+    } else {
+      loginButton.style.display = 'block';
+      logoutButton.style.display = 'none';
+    }
+  
+    // Attach click event to logout button
+    if (logoutButton) {
+      logoutButton.addEventListener("click", () => {
+        window.location.href = "/logout";
+      });
+    }
+  });
