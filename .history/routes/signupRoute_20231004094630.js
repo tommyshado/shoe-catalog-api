@@ -29,11 +29,14 @@ export default function signupRoute(userService) {
                 email,
                 password
             });
+            console.log('New User:', newUser);
+            
     
-            // Set session variables based on the returned user details
+            // Assuming 'createUser' returns an object containing 'userId' and 'accountType'
             req.session.username = username;
-            req.session.userType = newUser.accountType;
+            req.session.userType = newUser.accountType; // Store account type in session
             req.session.userId = newUser.userId;
+            console.log('Session:', req.session);
                  
     
             // Redirect based on the account type

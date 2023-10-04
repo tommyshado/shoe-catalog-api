@@ -4,32 +4,12 @@ export default function shoesService(db) {
       return await db.any('SELECT * FROM "public"."shoes" ORDER BY id ASC');
     }
     
-    async function addOrUpdateShoe({ name, color, brand, price, size, in_stock, image_url }) {
-      // Check if the shoe with the same name already exists
-      const existingShoe = await db.oneOrNone('SELECT * FROM "public"."shoes" WHERE name = $1', [name]);
-    
-      if (existingShoe) {
-        // If it exists, update the stock and other attributes
-        return await db.none(
-          `UPDATE "public"."shoes" 
-           SET in_stock = in_stock + $1, 
-               brand = $2, 
-               size = $3,
-               color = $4,
-               price = $5,
-               image_url = $6
-           WHERE name = $7`,
-          [in_stock, brand, size, color, price, image_url, name]
-        );
-      } else {
-        // If it doesn't exist, insert it as a new shoe
-        return await db.none(
-          'INSERT INTO "public"."shoes"(name, color, brand, price, size, in_stock, image_url) VALUES($1, $2, $3, $4, $5, $6, $7)',
-          [name, color, brand, price, size, in_stock, image_url]
-        );
-      }
+  
+    async function addShoe( { name, color, brand, price, size, in_stock, image_url } ) {
+      // const = shoe;
+      return await db.none('INSERT INTO "public"."shoes"(name, color, brand, price, size, in_stock, image_url) VALUES($1, $2, $3, $4, $5, $6, $7)', 
+                           [name, color, brand, price, size, in_stock, image_url]);
     }
-    
 
     async function getFilterData() {
         const colors = await db.any('SELECT DISTINCT color FROM "public"."shoes"');
@@ -119,7 +99,7 @@ async function updateCartQuantity(cart_id, newQuantity) {
 
 
 async function getCartItems(user_id) {
-
+    console.log(`Fetching cart items: User ID = ${user_id}`);
     return await db.any(`
         SELECT 
             carts.cart_id,
@@ -180,7 +160,7 @@ async function getShoeById(shoeId) {
   
     return  {
       getAllShoes,
-      addOrUpdateShoe,
+      addShoe,
       getShoesByBrand,
       getShoesBySize,
       getShoesByBrandAndSize,

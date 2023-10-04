@@ -180,7 +180,7 @@ async function getShoeById(shoeId) {
   
     return  {
       getAllShoes,
-      addOrUpdateShoe,
+      addShoe,
       getShoesByBrand,
       getShoesBySize,
       getShoesByBrandAndSize,

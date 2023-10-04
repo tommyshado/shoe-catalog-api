@@ -30,11 +30,10 @@ export default function signupRoute(userService) {
                 password
             });
     
-            // Set session variables based on the returned user details
+            // Assuming 'createUser' returns an object containing 'userId' and 'accountType'
             req.session.username = username;
-            req.session.userType = newUser.accountType;
-            req.session.userId = newUser.userId;
-                 
+            req.session.userType = newUser.accountType; // Store account type in session
+            req.session.userId = newUser.userId;        // Store user ID in session
     
             // Redirect based on the account type
             if (newUser.accountType === 'admin') {

@@ -11,7 +11,7 @@ export default function shoeAPI(shoeService) {
   
     async function add(req, res) {
       try {
-        await shoeService.addOrUpdateShoe(req.body);
+        await shoeService.addShoe(req.body);
         res.json({ message: "Shoe added successfully" });
       } catch (err) {
         res.status(500).json({ error: err.message });
