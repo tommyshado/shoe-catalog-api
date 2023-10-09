@@ -371,7 +371,7 @@ p {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 90vh;
+  height: 80vh;
   overflow: scroll;
   margin-top: 2em;
 }
