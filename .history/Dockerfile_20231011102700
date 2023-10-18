@@ -1,8 +1,6 @@
 # Use Node.js 17-alpine as the base image
 FROM node:17-alpine
 
-RUN npm install -g nodemon
-
 # Set the working directory inside the container
 WORKDIR /usr/src/app
 

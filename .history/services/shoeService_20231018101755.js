@@ -5,28 +5,29 @@ export default function shoesService(db) {
     }
     
     async function addOrUpdateShoe({ name, color, brand, price, size, in_stock, image_url }) {
-      try {
-        const similarShoes = await db.any('SELECT * FROM "public"."shoes" WHERE name LIKE $1', [`%${name}%`]);
-        
-        if (similarShoes.length > 0) {
-          await db.none(
+      await db.tx(async t => {  // Start a new transaction
+        const result = await t.any('SELECT id FROM "public"."shoes" WHERE name = $1', [name]);
+    
+        if (result.length > 0) {
+          // If a match exists, update only the stock
+          await t.none(
             `UPDATE "public"."shoes" 
              SET in_stock = in_stock + $1
-             WHERE name = $2`,
-            [in_stock, name]
+             WHERE id = $2`,
+            [in_stock, result[0].id]
           );
-          console.log('Shoe stock updated');
         } else {
-          await db.none(
+          // If it doesn't exist, insert it as a new shoe with all attributes
+          await t.none(
             'INSERT INTO "public"."shoes"(name, color, brand, price, size, in_stock, image_url) VALUES($1, $2, $3, $4, $5, $6, $7)',
             [name, color, brand, price, size, in_stock, image_url]
           );
-          console.log('New shoe added');
         }
-      } catch (error) {
-        console.error('Database error:', error);
-      }
+      }).catch(error => {
+        console.error("Transaction failed:", error);
+      });
     }
+    
     
 
     
@@ -96,7 +97,7 @@ async function removeFromCart(cart_id) {
     const cartItem = await db.oneOrNone('SELECT * FROM "public"."carts" WHERE cart_id = $1', [cart_id]);
     
     if (!cartItem) {
-     
+      console.log(`No cart item found for cart_id: ${cart_id}`);
       return { status: 'error', message: 'No cart item found' };
     }
 

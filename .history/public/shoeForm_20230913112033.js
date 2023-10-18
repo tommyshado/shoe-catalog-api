@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-  
+    console.log('DOM fully loaded for ShoeForm.handlebars');
 
     const form = document.getElementById('addShoeForm');
     if (form) {
@@ -7,13 +7,13 @@ document.addEventListener('DOMContentLoaded', function () {
             e.preventDefault();
             
             const formData = {
-                name: form.name.value.trim(),
-                brand: form.brand.value.trim(),
-                size: parseInt(form.size.value.trim()),
-                color: form.color.value.trim(),
-                price: parseFloat(form.price.value.trim()),
-                in_stock: parseInt(form.in_stock.value.trim()),
-                image_url: form.image_url.value.trim()
+                name: form.name.value,
+                brand: form.brand.value,
+                size: parseInt(form.size.value),
+                color: form.color.value,
+                price: parseFloat(form.price.value),
+                in_stock: parseInt(form.in_stock.value),
+                image_url: form.image_url.value
             };
             
             try {

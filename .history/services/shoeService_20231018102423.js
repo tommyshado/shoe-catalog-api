@@ -96,7 +96,7 @@ async function removeFromCart(cart_id) {
     const cartItem = await db.oneOrNone('SELECT * FROM "public"."carts" WHERE cart_id = $1', [cart_id]);
     
     if (!cartItem) {
-     
+      console.log(`No cart item found for cart_id: ${cart_id}`);
       return { status: 'error', message: 'No cart item found' };
     }
 

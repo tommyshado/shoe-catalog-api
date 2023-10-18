@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-  
+    console.log('DOM fully loaded for ShoeForm.handlebars');
 
     const form = document.getElementById('addShoeForm');
     if (form) {

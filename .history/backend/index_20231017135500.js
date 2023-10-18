@@ -6,19 +6,19 @@ import session from 'express-session';
 import path from 'path';
 
 // Import services, routes, and API
-import shoeService from "./services/shoeService.js"; 
-import userService from "./services/userService.js";
+import shoeService from "../services/shoeService.js"; 
+import userService from "../services/userService.js";
 
 
-import shoeRoute from "./routes/shoeRoutes.js"; 
-import signupRoute from "./routes/signupRoute.js";
-import homeRoute from "./routes/homeRoute.js";
-import AuthRoute from "./routes/authRoute.js";
-import loginRoute from "./routes/loginRoute.js";
+import shoeRoute from "../routes/shoeRoutes.js"; 
+import signupRoute from "../routes/signupRoute.js";
+import homeRoute from "../routes/homeRoute.js";
+import AuthRoute from "../routes/authRoute.js";
+import loginRoute from "../routes/loginRoute.js";
 
 
-import shoeAPI from "./api/shoeAPI.js";  
-import AuthApi from "./api/authAPI.js";
+import shoeAPI from "../api/shoeAPI.js";  
+import AuthApi from "../api/authAPI.js";
 
 const app = express();
 
