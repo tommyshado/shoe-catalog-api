@@ -510,7 +510,8 @@ document.querySelector(".cart_list").addEventListener("click", async function(ev
 
 
 document.getElementById('checkoutButton').addEventListener('click', async function() {
-
+  // Debugging: Log the start of the checkout process
+  console.log('Starting checkout process...');
 
   // Show a confirmation dialog
   const isConfirmed = window.confirm("Are you sure you want to proceed with the checkout?");
@@ -530,7 +531,6 @@ document.getElementById('checkoutButton').addEventListener('click', async functi
         cart = {};  // Clear the client-side cart object
         updateCartUI();  // Update the UI
         updateTotalPrice();  // Update the total price
-        fetchShoes();
       } else {
         console.error(`Failed to checkout: ${response.status} - ${response.statusText}`);
       }

@@ -116,28 +116,25 @@ async function removeFromCart(cart_id) {
 
 
 
-
+async function updateShoeStock(shoe_id, newStock) {
+  try {
+    const result = await db.oneOrNone('UPDATE "public"."shoes" SET available_stock = $1 WHERE id = $2 RETURNING available_stock', [newStock, shoe_id]);
+    return result;
+  } catch (err) {
+    console.error("Error updating shoe stock: ", err);
+    throw err;
+  }
+}
 
 
 
 async function updateCartQuantity(cart_id, newQuantity) {
   try {
-    // Fetch the existing cart item to get its current quantity and associated shoe_id
-    const existingCartItem = await db.one('SELECT * FROM "public"."carts" WHERE cart_id = $1', [cart_id]);
-
-    // Calculate the difference in quantity
-    const quantityDifference = newQuantity - existingCartItem.quantity;
-
-    // Update the cart item's quantity
-    await db.none('UPDATE "public"."carts" SET quantity = $1 WHERE cart_id = $2', [newQuantity, cart_id]);
-
-    // Update the in_stock value in the shoes table based on the quantity difference
-    await db.none('UPDATE "public"."shoes" SET in_stock = in_stock - $1 WHERE id = $2', [quantityDifference, existingCartItem.shoe_id]);
-
-    return { status: 'success', message: 'Quantity updated successfully' };
+    const result = await db.oneOrNone('UPDATE "public"."carts" SET quantity = $1 WHERE cart_id = $2 RETURNING quantity', [newQuantity, cart_id]);
+    return result;
   } catch (err) {
     console.error("Error updating cart: ", err);
-    return { status: 'error', message: 'Failed to update cart' };
+    throw err;
   }
 }
 

@@ -116,7 +116,15 @@ async function removeFromCart(cart_id) {
 
 
 
-
+async function updateShoeStock(shoe_id, newStock) {
+  try {
+    const result = await db.oneOrNone('UPDATE "public"."shoes" SET available_stock = $1 WHERE id = $2 RETURNING available_stock', [newStock, shoe_id]);
+    return result;
+  } catch (err) {
+    console.error("Error updating shoe stock: ", err);
+    throw err;
+  }
+}
 
 
 

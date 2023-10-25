@@ -530,7 +530,6 @@ document.getElementById('checkoutButton').addEventListener('click', async functi
         cart = {};  // Clear the client-side cart object
         updateCartUI();  // Update the UI
         updateTotalPrice();  // Update the total price
-        fetchShoes();
       } else {
         console.error(`Failed to checkout: ${response.status} - ${response.statusText}`);
       }

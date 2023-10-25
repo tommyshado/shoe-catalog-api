@@ -116,28 +116,25 @@ async function removeFromCart(cart_id) {
 
 
 
-
+async function updateShoeStock(shoe_id, newStock) {
+  try {
+    const result = await db.oneOrNone('UPDATE "public"."shoes" SET available_stock = $1 WHERE id = $2 RETURNING available_stock', [newStock, shoe_id]);
+    return result;
+  } catch (err) {
+    console.error("Error updating shoe stock: ", err);
+    throw err;
+  }
+}
 
 
 
 async function updateCartQuantity(cart_id, newQuantity) {
   try {
-    // Fetch the existing cart item to get its current quantity and associated shoe_id
-    const existingCartItem = await db.one('SELECT * FROM "public"."carts" WHERE cart_id = $1', [cart_id]);
-
-    // Calculate the difference in quantity
-    const quantityDifference = newQuantity - existingCartItem.quantity;
-
-    // Update the cart item's quantity
-    await db.none('UPDATE "public"."carts" SET quantity = $1 WHERE cart_id = $2', [newQuantity, cart_id]);
-
-    // Update the in_stock value in the shoes table based on the quantity difference
-    await db.none('UPDATE "public"."shoes" SET in_stock = in_stock - $1 WHERE id = $2', [quantityDifference, existingCartItem.shoe_id]);
-
-    return { status: 'success', message: 'Quantity updated successfully' };
+    const result = await db.oneOrNone('UPDATE "public"."carts" SET quantity = $1 WHERE cart_id = $2 RETURNING quantity', [newQuantity, cart_id]);
+    return result;
   } catch (err) {
     console.error("Error updating cart: ", err);
-    return { status: 'error', message: 'Failed to update cart' };
+    throw err;
   }
 }
 
@@ -174,6 +171,50 @@ async function checkout(user_id) {
     // Fetch all cart items for the user
     const cartItems = await t.any('SELECT * FROM "public"."carts" WHERE user_id = $1', [user_id]);
     console.log(`Initial cart items for user ${user_id}: `, cartItems);
+
+    // Commenting out the stock update logic
+    /*
+    // Update the in_stock for each cart item
+    for (const item of cartItems) {
+      const initialStock = await t.one('SELECT in_stock FROM "public"."shoes" WHERE id = $1', [item.shoe_id]);
+      console.log(`Initial stock for item ${item.shoe_id}: `, initialStock);
+
+      // No longer updating the stock here
+      // await t.none('UPDATE "public"."shoes" SET in_stock = in_stock - $1 WHERE id = $2', [item.quantity, item.shoe_id]);
+
+      const updatedStock = await t.one('SELECT in_stock FROM "public"."shoes" WHERE id = $1', [item.shoe_id]);
+      console.log(`Updated stock for item ${item.shoe_id}: `, updatedStock);
+    }
+    */
+
+    // Delete all cart items for the user
+    await t.none('DELETE FROM "public"."carts" WHERE user_id = $1', [user_id]);
+  });
+
+  return { message: 'Checkout successful' };
+}
+async function checkout(user_id) {
+
+  // Start transaction
+  await db.tx(async t => {
+    // Fetch all cart items for the user
+    const cartItems = await t.any('SELECT * FROM "public"."carts" WHERE user_id = $1', [user_id]);
+    console.log(`Initial cart items for user ${user_id}: `, cartItems);
+
+    // Commenting out the stock update logic
+    /*
+    // Update the in_stock for each cart item
+    for (const item of cartItems) {
+      const initialStock = await t.one('SELECT in_stock FROM "public"."shoes" WHERE id = $1', [item.shoe_id]);
+      console.log(`Initial stock for item ${item.shoe_id}: `, initialStock);
+
+      // No longer updating the stock here
+      // await t.none('UPDATE "public"."shoes" SET in_stock = in_stock - $1 WHERE id = $2', [item.quantity, item.shoe_id]);
+
+      const updatedStock = await t.one('SELECT in_stock FROM "public"."shoes" WHERE id = $1', [item.shoe_id]);
+      console.log(`Updated stock for item ${item.shoe_id}: `, updatedStock);
+    }
+    */
 
     // Delete all cart items for the user
     await t.none('DELETE FROM "public"."carts" WHERE user_id = $1', [user_id]);
