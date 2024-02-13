@@ -2,7 +2,7 @@
 
 [![Node.js CI](https://github.com/lasity34/shoe-catalog-api/actions/workflows/node.js.yml/badge.svg)](https://github.com/lasity34/shoe-catalog-api/actions/workflows/node.js.yml)
 
-
+Website URL - https://shoe-catalog-api.onrender.com
 # Shoe Catalogue API 👟🛒
 
 ## Table of Contents
@@ -31,7 +31,7 @@ A comprehensive API designed for Lubabalo's shoe shop. The API integrates with h
 - **Bcrypt**: For security.
 - **Axios**: HTTP client for API calls.
 - **CORS**: Cross-Origin Resource Sharing.
-- **Deployed on Heroku**: Cloud platform for deployment.
+- **Deployed on Render**: Cloud platform for deployment.
 
 ---
 
