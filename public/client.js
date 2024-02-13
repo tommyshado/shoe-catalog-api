@@ -263,7 +263,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }
   
       const shoeId = event.target.getAttribute("data-id");
-      const userId = user; // Assuming 'user' is the variable where you store the user ID
+      const userId = user; 
       
       // Check if the item is already in the cart
       if (cart[shoeId]) {
@@ -550,12 +550,14 @@ document.addEventListener("DOMContentLoaded", async function() {
 
   const loginButton = document.getElementById('loginButton');
   const logoutButton = document.getElementById('logoutButton');
-  const signupButton = document.getElementById('signupButton');  // Get the Signup button
+  const signupButton = document.getElementById('signupButton');  
+  const logoDisplay = document.getElementsByClassName('logo_container')
 
   if (data.loggedIn) {
     loginButton.style.display = 'none';
     logoutButton.style.display = 'block';
     signupButton.style.display = 'none';  // Hide the Signup button
+    logoDisplay.style.marginRight = "3em";
     onLoginSuccess(data.username);  // Update the UI with the username
   } else {
     loginButton.style.display = 'block';

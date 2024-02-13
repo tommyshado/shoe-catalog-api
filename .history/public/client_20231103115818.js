@@ -189,48 +189,52 @@ document.addEventListener("DOMContentLoaded", function () {
 
   async function fetchCartItems() {
     try {
-      const userId = user;
+      const userId = user;  // Make sure 'user' is defined or fetched from somewhere
   
-      // Log the userId to make sure it's what you expect
-      console.log("Fetching cart items for userId:", userId);
+      // Debugging: Log the user ID being fetched
 
+  
       const response = await fetch(`/api/cart/items/${userId}`);
   
-      // Log raw response text for debugging
-      const rawText = await response.text();
-      console.log("Raw response text:", rawText);
+      // Debugging: Log the raw response text for tracing
+   
   
       if (!response.ok) {
         console.log(`Error fetching cart items: ${response.status} - ${response.statusText}`);
         return;
       }
   
-      const cartItems = JSON.parse(rawText);  // Parse the raw text to JSON
+      const cartItems = await response.json();
   
-      // Log the parsed cart items for debugging
-      console.log("Parsed cart items:", cartItems);
-
+      // Debugging: Log the parsed cart items
+     
+  
       for (let item of cartItems.data) {
-        // Fetch available stock for this shoe
-        const stockResponse = await fetch(`/api/shoes/${item.shoe_id}/stock`);
-        const stockData = await stockResponse.json();
-        
-        // Log the stock data for debugging
-        console.log("Stock data:", stockData);
-        
-        const available_stock = stockData.in_stock;  // assuming the stock number is in `in_stock` field
+        const stockResponse = await fetch(`/api/shoes/${item.shoe_id}`);
   
-        if (!cart[item.shoe_id] || cart[item.shoe_id].quantity !== item.quantity) {
-          cart[item.shoe_id] = {
-            cart_id: item.cart_id,
-            id: item.shoe_id,
-            name: item.name,
-            size: item.size,
-            quantity: item.quantity,
-            image_url: item.image_url,
-            price: item.price,
-            available_stock: available_stock  // Store available stock
-          };
+        // Check if the stockResponse is ok
+        if (stockResponse.ok) {
+          const stockData = await stockResponse.json();
+  
+          // Debugging: Log the stock data
+        
+  
+          const available_stock = stockData.in_stock;  // assuming the stock number is in `in_stock` field
+          
+          if (!cart[item.shoe_id] || cart[item.shoe_id].quantity !== item.quantity) {
+            cart[item.shoe_id] = {
+              cart_id: item.cart_id,
+              id: item.shoe_id,
+              name: item.name,
+              size: item.size,
+              quantity: item.quantity,
+              image_url: item.image_url,
+              price: item.price,
+              available_stock: available_stock  // Store available stock
+            };
+          }
+        } else {
+          console.log(`Error fetching stock for shoe_id: ${item.shoe_id}, Status: ${stockResponse.status}`);
         }
       }
   
@@ -239,7 +243,7 @@ document.addEventListener("DOMContentLoaded", function () {
     } catch (error) {
       console.error('An error occurred:', error);
     }
-}
+  }
 
   
 
@@ -259,7 +263,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }
   
       const shoeId = event.target.getAttribute("data-id");
-      const userId = user; // Assuming 'user' is the variable where you store the user ID
+      const userId = user; 
       
       // Check if the item is already in the cart
       if (cart[shoeId]) {
@@ -389,25 +393,37 @@ async function updateQuantity(cartItemId, change) {
     }
 
     if (updatedQuantity <= 0) {
-      
-
       const res = await fetch(`/api/cart/remove/${cartItemId}`, {
         method: 'DELETE'
       });
-
+      
       // Check if the server-side removal was successful.
       if (res.ok) {
-        console.log(`Successfully removed cart item with ID ${cartItemId}`);
+      
+        // Make a fetch call to update available stock on the server.
+        const stockResponse = await fetch(`/api/cart/updateQuantity`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ cart_id: cartItemId, newQuantity: cartItem.available_stock + cartItem.quantity }),
+        });
+    
+        if (stockResponse.ok) {
+          console.log("Successfully updated stock on the server.");
+        } else {
+          console.error("Failed to update stock on the server.");
+        }
+    
+        delete cart[cartItem.id];  // Remove from client-side cart
+        await fetchCartItems();    // Refresh cart items from the server
+        updateCartUI();            // Update the UI to reflect the changes
       } else {
         console.log('Failed to remove cart item');
       }
-
-      // Remove from the client-side cart.
-      delete cart[cartItem.id];
-
-      // Fetch the updated list of shoes.
-      await fetchShoes();
-    } else {
+    }
+    
+     else {
       // Update the server-side cart.
       const response = await fetch(`/api/cart/updateQuantity`, {
         method: 'PUT',
@@ -494,6 +510,8 @@ document.querySelector(".cart_list").addEventListener("click", async function(ev
 
 
 document.getElementById('checkoutButton').addEventListener('click', async function() {
+
+
   // Show a confirmation dialog
   const isConfirmed = window.confirm("Are you sure you want to proceed with the checkout?");
 
@@ -501,6 +519,8 @@ document.getElementById('checkoutButton').addEventListener('click', async functi
   if (isConfirmed) {
     try {
       const userId = user;  // Assuming 'user' contains the user ID
+      
+
       const response = await fetch(`/api/cart/checkout/${userId}`, {
         method: 'POST'
       });
@@ -510,6 +530,7 @@ document.getElementById('checkoutButton').addEventListener('click', async functi
         cart = {};  // Clear the client-side cart object
         updateCartUI();  // Update the UI
         updateTotalPrice();  // Update the total price
+        fetchShoes();
       } else {
         console.error(`Failed to checkout: ${response.status} - ${response.statusText}`);
       }
@@ -520,35 +541,44 @@ document.getElementById('checkoutButton').addEventListener('click', async functi
     console.log("Checkout cancelled by the user.");
   }
 });
-
-
-
-
 });
 
 
-
 document.addEventListener("DOMContentLoaded", async function() {
-    const res = await fetch('/api/check-session');
-  
-    const data = await res.json();
-    
-    const loginButton = document.getElementById('loginButton');
-    const logoutButton = document.getElementById('logoutButton'); // Assuming you have added this button in your HTML
-  
-    // Toggle display of login and logout buttons based on session status
-    if (data.loggedIn) {
-      loginButton.style.display = 'none';
-      logoutButton.style.display = 'block';
-    } else {
-      loginButton.style.display = 'block';
-      logoutButton.style.display = 'none';
-    }
-  
-    // Attach click event to logout button
-    if (logoutButton) {
-      logoutButton.addEventListener("click", () => {
-        window.location.href = "/logout";
-      });
-    }
-  });
+  const res = await fetch('/api/check-session');
+  const data = await res.json();
+
+  const loginButton = document.getElementById('loginButton');
+  const logoutButton = document.getElementById('logoutButton');
+  const signupButton = document.getElementById('signupButton');  
+  const logoDisplay = document.getElementsByClassName('logo_container')
+
+  if (data.loggedIn) {
+    loginButton.style.display = 'none';
+    logoutButton.style.display = 'block';
+    signupButton.style.display = 'none';  // Hide the Signup button
+    logoDisplay.style.marginRight = "3em";
+    onLoginSuccess(data.username);  // Update the UI with the username
+  } else {
+    loginButton.style.display = 'block';
+    logoutButton.style.display = 'none';
+    signupButton.style.display = 'block';  // Show the Signup button
+    onLogout();
+  }
+
+  if (logoutButton) {
+    logoutButton.addEventListener("click", () => {
+      window.location.href = "/logout";
+      onLogout();
+    });
+  }
+});
+
+function onLoginSuccess(username) {
+  document.getElementById('usernameDisplay').textContent = "Welcome " + username;
+}
+
+function onLogout() {
+  document.getElementById('usernameDisplay').textContent = '';
+}
+
